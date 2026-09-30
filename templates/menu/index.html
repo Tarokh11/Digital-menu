@@ -1,0 +1,28 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<header class="site-header">
+  <a class="wordmark" href="{% url 'home' %}">{{ shop_name }}</a>
+  <a class="header-note" href="{% url 'home' %}">بازگشت به صفحه اصلی</a>
+</header>
+<main>
+  <section class="hero">
+    <p class="eyebrow">منوی ما</p>
+    <h1>یک انتخاب تازه<br>برای هر لحظه</h1>
+    <p class="intro">نوشیدنی دلخواهت را پیدا کن.</p>
+  </section>
+  <section class="menu-list" aria-label="منو">
+    {% for category, items in categories.items %}
+    <section class="category">
+      <h2>{{ category }}</h2>
+      {% for item in items %}
+      <article class="menu-item">
+        <div><h3>{{ item.name }}</h3><p>{{ item.description }}</p></div>
+        <span class="price">{{ item.price }}</span>
+      </article>
+      {% endfor %}
+    </section>
+    {% endfor %}
+  </section>
+</main>
+<footer><span>{{ shop_name }}</span><span>تازه آماده می‌شود، با عشق سرو می‌شود.</span></footer>
+{% endblock %}

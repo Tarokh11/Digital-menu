@@ -1,0 +1,29 @@
+# Digital Menu
+
+A Persian, right-to-left digital-menu website built with Django, reusable
+templates, and plain HTML/CSS. The landing page is designed mobile-first; its
+replaceable background image is `menu/static/menu/start-background.png`. The
+VITA-specific `PROJECT_GUIDE.md` is kept as an architecture reference; this
+project uses its own branding and content.
+
+## Local development
+
+With Docker:
+
+```sh
+cp .env.example .env
+docker compose up --build
+```
+
+Open <http://127.0.0.1:8002/> for the start page or
+<http://127.0.0.1:8002/menu/> for the sample menu. To run without Docker, install
+`requirements.txt`, then run `python manage.py runserver`.
+
+## Tests
+
+```sh
+python manage.py test
+```
+
+Menu items and the temporary shop name are in `menu/views.py`; update them with
+the shop's real information and prices.

@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+<main class="landing-page">
+  <section class="landing-hero" aria-labelledby="landing-title">
+    <div class="landing-art" aria-hidden="true"></div>
+    <div class="landing-content">
+      <p class="landing-kicker">تازه، طبیعی، پر از حال خوب</p>
+      <h1 id="landing-title">طعم <span>شادی</span><br>هر روز</h1>
+      <p class="landing-description">
+        آب‌میوه‌های طبیعی و تازه،<br>
+        با میوه‌های فصل،<br>
+        برای یک روز پرانرژی
+      </p>
+      <div class="slide-indicators" aria-hidden="true">
+        <span class="active"></span><span></span><span></span>
+      </div>
+    </div>
+    <a class="menu-cta" href="{% url 'menu' %}">
+      <span>مشاهده منو</span>
+      <span class="menu-cta-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+      </span>
+    </a>
+  </section>
+</main>
+{% endblock %}
