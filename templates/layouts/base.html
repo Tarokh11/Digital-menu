@@ -9,7 +9,8 @@
   <title>{{ shop_name }}</title>
   <link rel="stylesheet" href="{% static 'menu/menu.css' %}">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
   {% block content %}{% endblock %}
+  {% block scripts %}{% endblock %}
 </body>
 </html>

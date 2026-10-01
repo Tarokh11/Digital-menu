@@ -19,6 +19,9 @@ Open <http://127.0.0.1:8002/> for the start page or
 <http://127.0.0.1:8002/menu/> for the sample menu. To run without Docker, install
 `requirements.txt`, then run `python manage.py runserver`.
 
+The menu page includes client-side Persian search and category filtering. Its
+product artwork and visual references are stored in `menu/static/menu/assets/`.
+
 ## Tests
 
 ```sh

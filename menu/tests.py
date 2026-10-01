@@ -21,5 +21,17 @@ class MenuPageTests(TestCase):
     def test_menu_page_renders_categories_and_items(self):
         response = self.client.get(reverse("menu"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "آب‌پرتقال طبیعی")
-        self.assertContains(response, "آبمیوه‌های طبیعی")
+        self.assertContains(response, "منوی خوشمزه‌ها")
+        self.assertContains(response, "تروپیکال")
+        self.assertContains(response, "شکلات")
+        self.assertNotContains(response, "شکلات کلاسیک")
+        self.assertContains(response, "اسموتی")
+        self.assertContains(response, 'id="menu-search-input"')
+        self.assertContains(response, "menu/menu.js")
+
+    def test_menu_renders_all_product_cards(self):
+        response = self.client.get(reverse("menu"))
+        self.assertEqual(len(response.context["menu_items"]), 24)
+        self.assertEqual(len(response.context["menu_groups"]), 6)
+        self.assertContains(response, "data-category-section", count=6)
+        self.assertContains(response, "data-product-option", count=24)
