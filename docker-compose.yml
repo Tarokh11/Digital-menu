@@ -5,7 +5,7 @@ services:
     environment:
       SQLITE_PATH: /data/db.sqlite3
     ports:
-      - "127.0.0.1:${HOST_PORT:-8002}:8000"
+      - "${HOST_PORT:-8002}:8000"
     volumes:
       - sqlite_data:/data
 
