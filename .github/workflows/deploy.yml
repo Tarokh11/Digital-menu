@@ -78,8 +78,14 @@ jobs:
             "DEPLOY_PATH=$remote_path REPOSITORY=$remote_repository bash -se" <<'REMOTE'
           set -eu
           cd "$DEPLOY_PATH"
+          if [ ! -e .git ]; then
+            git init
+          fi
+          if ! git remote get-url origin >/dev/null 2>&1; then
+            git remote add origin "$REPOSITORY"
+          fi
           git remote set-url origin "$REPOSITORY"
-          git fetch --prune origin main
+          git fetch --prune origin +refs/heads/main:refs/remotes/origin/main
           git checkout -B main origin/main
           docker compose build web
           docker compose run --rm web python manage.py test
