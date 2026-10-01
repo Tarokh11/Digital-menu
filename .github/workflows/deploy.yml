@@ -89,7 +89,7 @@ jobs:
           git checkout -B main origin/main
           docker compose build web
           docker compose run --rm web python manage.py test
-          docker compose up -d
+          docker compose up -d --force-recreate
           docker compose exec -T web python manage.py check --deploy
           docker compose ps
           REMOTE
