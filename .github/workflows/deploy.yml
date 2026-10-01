@@ -62,6 +62,9 @@ jobs:
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
           set -eu
+          while [[ "$DEPLOY_PATH" == *$'\n' || "$DEPLOY_PATH" == *$'\r' ]]; do
+            DEPLOY_PATH="${DEPLOY_PATH%?}"
+          done
           printf -v remote_path '%q' "$DEPLOY_PATH"
           printf -v remote_repository '%q' "$REPOSITORY"
           ssh \
