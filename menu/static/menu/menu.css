@@ -274,7 +274,7 @@ a { color: inherit; }
 .feature-art { position: absolute; z-index: 1; left: 0; bottom: 0; display: grid; width: 58%; height: 100%; place-items: end center; overflow: hidden; pointer-events: none; }
 .feature-art::after { position: absolute; inset: 0; background: linear-gradient(90deg, transparent 55%, rgb(59 19 13 / 52%)), linear-gradient(0deg, transparent 78%, rgb(59 19 13 / 16%)); content: ""; }
 .feature-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(1.08) contrast(1.04); }
-.item-rail { display: flex; width: 100%; min-width: 0; max-width: 100%; gap: 10px; margin-top: 13px; padding: 3px 1px 12px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-color: rgb(255 139 44 / 42%) transparent; scrollbar-width: thin; }
+.item-rail { display: flex; width: 100%; min-width: 0; max-width: 100%; gap: 10px; margin-top: 13px; padding: 3px 1px 12px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-padding-inline: 1px; scroll-snap-type: x mandatory; scrollbar-color: rgb(255 139 44 / 42%) transparent; scrollbar-width: thin; }
 .menu-option { display: flex; width: 165px; min-height: 92px; flex: 0 0 165px; align-items: center; gap: 10px; padding: 8px; overflow: hidden; border: 1px solid rgb(255 255 255 / 11%); border-radius: 19px; background: rgb(3 46 34 / 88%); color: var(--menu-cream); font: inherit; text-align: right; scroll-snap-align: start; cursor: pointer; }
 .menu-option.is-selected { border-color: var(--menu-orange); background: rgb(77 45 17 / 92%); box-shadow: 0 8px 24px rgb(255 139 44 / 13%); }
 .menu-option img { width: 62px; height: 74px; flex: 0 0 auto; border-radius: 13px; object-fit: cover; }

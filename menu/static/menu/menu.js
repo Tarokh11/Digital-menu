@@ -3,6 +3,7 @@ const searchInput = document.querySelector("#menu-search-input");
 const categoryButtons = [...document.querySelectorAll("[data-category]")];
 const categorySections = [...document.querySelectorAll("[data-category-section]")];
 const productOptions = [...document.querySelectorAll("[data-product-option]")];
+const itemRails = [...document.querySelectorAll(".item-rail")];
 const visibleCount = document.querySelector("#visible-count");
 const noResults = document.querySelector("#no-results");
 const backToTop = document.querySelector("#back-to-top");
@@ -24,6 +25,7 @@ if (searchForm && searchInput) {
 
   const selectProduct = (option) => {
     const section = option.closest("[data-category-section]");
+    if (option.classList.contains("is-selected")) return;
     const panel = section.querySelector("[data-feature-panel]");
     const badge = panel.querySelector("[data-feature-badge]");
     const image = panel.querySelector("[data-feature-image]");
@@ -43,6 +45,30 @@ if (searchForm && searchInput) {
     image.alt = option.dataset.name;
     panel.classList.remove("is-changing");
     requestAnimationFrame(() => panel.classList.add("is-changing"));
+  };
+
+  const selectCenteredProduct = (rail) => {
+    const railRect = rail.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    const visibleOptions = [...rail.querySelectorAll("[data-product-option]")]
+      .filter((option) => !option.hidden)
+      .map((option) => {
+        const rect = option.getBoundingClientRect();
+        const visibleWidth = Math.max(
+          0,
+          Math.min(rect.right, railRect.right) - Math.max(rect.left, railRect.left),
+        );
+
+        return {
+          option,
+          visible: visibleWidth / rect.width,
+          distance: Math.abs(rect.left + rect.width / 2 - railCenter),
+        };
+      })
+      .filter(({visible}) => visible >= 0.5)
+      .sort((first, second) => first.distance - second.distance);
+
+    if (visibleOptions[0]) selectProduct(visibleOptions[0].option);
   };
 
   const filterProducts = () => {
@@ -72,6 +98,19 @@ if (searchForm && searchInput) {
 
   productOptions.forEach((option) => {
     option.addEventListener("click", () => selectProduct(option));
+  });
+
+  itemRails.forEach((rail) => {
+    let frameRequested = false;
+
+    rail.addEventListener("scroll", () => {
+      if (frameRequested) return;
+      frameRequested = true;
+      requestAnimationFrame(() => {
+        frameRequested = false;
+        selectCenteredProduct(rail);
+      });
+    }, {passive: true});
   });
 
   searchForm.addEventListener("submit", (event) => {

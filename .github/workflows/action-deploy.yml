@@ -1,0 +1,96 @@
+name: Deploy to production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Validate deployment secrets
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -eu
+          for variable in SERVER_HOST SERVER_USER SERVER_SSH_KEY DEPLOY_PATH; do
+            if [ -z "${!variable}" ]; then
+              printf 'Missing required deployment value: %s\n' "$variable" >&2
+              exit 1
+            fi
+          done
+          if ! printf '%s' "$SERVER_SSH_KEY" | grep -q 'PRIVATE KEY'; then
+            printf 'SERVER_SSH_KEY must contain an OpenSSH private key, not a public key.\n' >&2
+            exit 1
+          fi
+
+      - name: Load deployment SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      - name: Add server host key
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT || '22' }}
+        run: |
+          set -eu
+          install -d -m 700 "$HOME/.ssh"
+          ssh-keyscan -H -T 10 -p "$SERVER_PORT" "$SERVER_HOST" >> "$HOME/.ssh/known_hosts"
+
+      - name: Deploy over SSH
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          REPOSITORY: https://github.com/${{ github.repository }}.git
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT || '22' }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          set -eu
+          while [[ "$DEPLOY_PATH" == *$'\n' || "$DEPLOY_PATH" == *$'\r' ]]; do
+            DEPLOY_PATH="${DEPLOY_PATH%?}"
+          done
+          printf -v remote_path '%q' "$DEPLOY_PATH"
+          printf -v remote_repository '%q' "$REPOSITORY"
+          ssh \
+            -o BatchMode=yes \
+            -o ConnectTimeout=10 \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=3 \
+            -o StrictHostKeyChecking=yes \
+            -p "$SERVER_PORT" \
+            "$SERVER_USER@$SERVER_HOST" \
+            "DEPLOY_PATH=$remote_path REPOSITORY=$remote_repository bash -se" <<'REMOTE'
+          set -eu
+          cd "$DEPLOY_PATH"
+          if [ ! -e .git ]; then
+            git init
+          fi
+          if ! git remote get-url origin >/dev/null 2>&1; then
+            git remote add origin "$REPOSITORY"
+          fi
+          git remote set-url origin "$REPOSITORY"
+          git fetch --prune origin +refs/heads/main:refs/remotes/origin/main
+          git checkout -B main origin/main
+           docker compose build web
+           docker compose run --rm web python manage.py test
+           docker compose rm -sf web
+          docker compose up -d --no-build
+           docker compose exec -T web python manage.py check --deploy
+          docker compose ps
+          REMOTE
