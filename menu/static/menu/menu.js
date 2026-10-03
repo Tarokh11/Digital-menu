@@ -50,8 +50,9 @@ if (searchForm && searchInput) {
   const selectCenteredProduct = (rail) => {
     const railRect = rail.getBoundingClientRect();
     const railCenter = railRect.left + railRect.width / 2;
-    const visibleOptions = [...rail.querySelectorAll("[data-product-option]")]
-      .filter((option) => !option.hidden)
+    const railOptions = [...rail.querySelectorAll("[data-product-option]")]
+      .filter((option) => !option.hidden);
+    const visibleOptions = railOptions
       .map((option) => {
         const rect = option.getBoundingClientRect();
         const visibleWidth = Math.max(
@@ -61,6 +62,7 @@ if (searchForm && searchInput) {
 
         return {
           option,
+          rect,
           visible: visibleWidth / rect.width,
           distance: Math.abs(rect.left + rect.width / 2 - railCenter),
         };
@@ -68,7 +70,26 @@ if (searchForm && searchInput) {
       .filter(({visible}) => visible >= 0.5)
       .sort((first, second) => first.distance - second.distance);
 
-    if (visibleOptions[0]) selectProduct(visibleOptions[0].option);
+    const firstOption = visibleOptions.find(({option}) => option === railOptions[0]);
+    const lastOption = visibleOptions.find(({option}) => option === railOptions[railOptions.length - 1]);
+    const direction = getComputedStyle(rail).direction;
+    const leadingOption = direction === "rtl" ? firstOption : lastOption;
+    const trailingOption = direction === "rtl" ? lastOption : firstOption;
+    const edgeOffset = 4;
+    const reachesLeadingEdge = leadingOption && (direction === "rtl"
+      ? leadingOption.rect.right >= railRect.right - edgeOffset
+      : leadingOption.rect.left <= railRect.left + edgeOffset);
+    const reachesTrailingEdge = trailingOption && (direction === "rtl"
+      ? trailingOption.rect.left <= railRect.left + edgeOffset
+      : trailingOption.rect.right >= railRect.right - edgeOffset);
+
+    if (reachesLeadingEdge) {
+      selectProduct(leadingOption.option);
+    } else if (reachesTrailingEdge) {
+      selectProduct(trailingOption.option);
+    } else if (visibleOptions[0]) {
+      selectProduct(visibleOptions[0].option);
+    }
   };
 
   const filterProducts = () => {
