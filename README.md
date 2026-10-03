@@ -3,8 +3,8 @@
 A Persian, right-to-left digital-menu website built with Django, reusable
 templates, and plain HTML/CSS. The landing page is designed mobile-first; its
 replaceable background image is `menu/static/menu/start-background.png`. The
-VITA-specific `PROJECT_GUIDE.md` is kept as an architecture reference; this
-project uses its own branding and content.
+`PROJECT_GUIDE.md` documents the current project structure, development setup,
+menu data, tests, and deployment configuration.
 
 ## Local development
 
