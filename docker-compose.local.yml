@@ -1,0 +1,18 @@
+services:
+  web:
+    image: master-web
+    container_name: juice-shop-01-fastfood
+    env_file: .env
+    environment:
+      SQLITE_PATH: /data/db.sqlite3
+      DJANGO_DEBUG: "1"
+    ports:
+      - "127.0.0.1:8025:8000"
+    volumes:
+      - .:/app:ro
+      - fastfood_talia_data:/data
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+volumes:
+  fastfood_talia_data:
+    name: fastfood_talia_data
