@@ -1,36 +1,43 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-{% block body_class %}menu-body{% endblock %}
+{% block body_class %}menu-body {{ menu_theme }}{% endblock %}
 {% block content %}
-<header class="menu-header">
-  <a class="menu-brand" href="{% url 'home' %}" aria-label="صفحه اصلی">
-    <span class="menu-brand-mark">V</span>
-    <span>{{ shop_name }}</span>
-  </a>
-  <a class="home-link" href="{% url 'home' %}">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 11 8-7 8 7v9h-5v-6H9v6H4Z" /></svg>
-    <span>خانه</span>
-  </a>
-</header>
-
 <main class="menu-page">
   <section class="menu-discovery" aria-labelledby="menu-title">
-    <div class="menu-title-wrap">
-      <div>
-        <p>هر چی دلت می‌خواد</p>
-        <h1 id="menu-title">منوی خوشمزه‌ها</h1>
-        <span>طعم مورد علاقه‌تو پیدا کن</span>
+    <div class="menu-hero">
+      <header class="menu-hero-nav">
+        <a class="menu-hero-icon" href="{% url other_menu_url %}" aria-label="{{ other_menu_label }}" title="{{ other_menu_label }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+        </a>
+        <a class="menu-hero-brand" href="{% url 'home' %}" aria-label="صفحه اصلی {{ brand_label }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 3C13 3.5 8.5 7.2 8.5 13.2c0 3.1 1.8 5.7 4.5 7.1 0-5.3 2.1-9.6 6.5-13.1Z" /><path d="M4.5 8.1c4.6.4 7.4 3 7.4 7.2 0 2.4-1.3 4.6-3.4 5.7C8.3 16.2 7 12.1 4.5 8.1Z" /></svg>
+          <span>{{ brand_label }}</span>
+        </a>
+        <div class="menu-hero-actions">
+          <button class="menu-hero-icon" type="button" aria-label="سبد خرید">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.2h10.9L21 7H6.1" /><circle cx="9" cy="19" r="1" /><circle cx="18" cy="19" r="1" /></svg>
+          </button>
+          <a class="menu-hero-icon" href="#contact" aria-label="اطلاعات تماس">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M4.5 21c.8-4 3.4-6 7.5-6s6.7 2 7.5 6" /></svg>
+          </a>
+        </div>
+      </header>
+      <div class="menu-hero-content">
+        <h1 id="menu-title">{{ hero_line_one }}<br>{{ hero_line_two }}</h1>
+        <ul class="menu-hero-benefits" aria-label="ویژگی‌های {{ brand_label }}">
+          {% for icon, label in hero_benefits %}<li><span>{{ icon }}</span>{{ label }}</li>{% endfor %}
+        </ul>
       </div>
-    </div>
 
-    <form class="menu-search" role="search" id="menu-search-form">
-      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
-      <label class="sr-only" for="menu-search-input">جستجو در منو</label>
-      <input id="menu-search-input" type="search" placeholder="اسم یا ترکیبات رو جستجو کن..." autocomplete="off">
-      <button type="submit" aria-label="جستجو">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
-      </button>
-    </form>
+      <form class="menu-search" role="search" id="menu-search-form">
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+        <label class="sr-only" for="menu-search-input">جستجو در منو</label>
+        <input id="menu-search-input" type="search" placeholder="{{ search_placeholder }}" autocomplete="off">
+        <button type="submit" aria-label="جستجو">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+        </button>
+      </form>
+    </div>
 
   </section>
 
@@ -40,7 +47,7 @@
     </button>
     {% for category in categories %}
     <button class="category-chip" type="button" data-category="{{ category }}" aria-pressed="false">
-      <span class="chip-icon">{% if category == "اسموتی" %}♨{% elif category == "شیک" %}♜{% elif category == "بستنی" %}♧{% else %}⌁{% endif %}</span>
+      <span class="chip-icon">{% if category == "اسموتی" or category == "قهوه و نوشیدنی گرم" %}♨{% elif category == "شیک" or category == "پاستا" %}♜{% elif category == "بستنی" or category == "دسر" %}♧{% elif category == "پیتزا" %}◉{% elif category == "سالاد" %}❧{% else %}⌁{% endif %}</span>
       {{ category }}
     </button>
     {% endfor %}
@@ -67,7 +74,7 @@
             <p class="product-category">{{ group.name }}</p>
             <h4 data-feature-name>{{ featured.name }}</h4>
             <p class="feature-description" data-feature-description>{{ featured.description }}</p>
-            <p class="feature-price"><strong data-feature-price>{{ featured.price }}</strong><span>هزار تومان</span></p>
+            {% if featured.price %}<p class="feature-price"><strong data-feature-price>{{ featured.price }}</strong><span>هزار تومان</span></p>{% endif %}
           </div>
           <div class="feature-art">
             <img data-feature-image src="{% static featured.image %}" alt="{{ featured.name }}">
@@ -81,13 +88,13 @@
                   data-product-option
                   data-name="{{ item.name }}"
                   data-description="{{ item.description }}"
-                  data-price="{{ item.price }}"
+                  data-price="{{ item.price|default:'' }}"
                   data-badge="{{ item.badge|default:'' }}"
                   data-image="{% static item.image %}"
                   data-search="{{ item.name }} {{ item.description }} {{ item.category }}"
                   aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
             <img src="{% static item.image %}" alt="" loading="lazy">
-            <span><strong>{{ item.name }}</strong><small>{{ item.price }} هزار تومان</small></span>
+            <span><strong>{{ item.name }}</strong>{% if item.price %}<small>{{ item.price }} هزار تومان</small>{% else %}<small>قیمت اعلام نشده</small>{% endif %}</span>
           </button>
           {% endfor %}
         </div>
@@ -103,9 +110,9 @@
   <div class="footer-leaf" aria-hidden="true">❧</div>
   <div class="footer-top">
     <div class="footer-message">
-      <p>طعم خوبِ لحظه‌ها</p>
-      <h2>منتظرتیم،<br>با یه <span>لیوان خنک.</span></h2>
-      <p class="footer-note">اطلاعات تماس و آدرس فروشگاه اینجا قرار می‌گیرد.</p>
+      <p>{{ footer_kicker }}</p>
+      <h2>{{ footer_line_one }}<br>{{ footer_line_two }} <span>{{ footer_emphasis }}</span></h2>
+      <p class="footer-note">{{ footer_note }}</p>
     </div>
     <div class="loyalty-card" aria-label="باشگاه مشتریان">
       <span class="loyalty-brand">{{ shop_name }}</span>

@@ -38,7 +38,8 @@ if (searchForm && searchInput) {
 
     panel.querySelector("[data-feature-name]").textContent = option.dataset.name;
     panel.querySelector("[data-feature-description]").textContent = option.dataset.description;
-    panel.querySelector("[data-feature-price]").textContent = option.dataset.price;
+    const price = panel.querySelector("[data-feature-price]");
+    if (price) price.textContent = option.dataset.price;
     badge.textContent = option.dataset.badge;
     badge.hidden = !option.dataset.badge;
     image.src = option.dataset.image;

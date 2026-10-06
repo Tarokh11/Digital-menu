@@ -21,7 +21,8 @@ class MenuPageTests(TestCase):
     def test_menu_page_renders_categories_and_items(self):
         response = self.client.get(reverse("menu"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "منوی خوشمزه‌ها")
+        self.assertContains(response, "میوه‌های تازه")
+        self.assertContains(response, "حال خوب واقعی")
         self.assertContains(response, "تروپیکال")
         self.assertContains(response, "شکلات")
         self.assertNotContains(response, "شکلات کلاسیک")

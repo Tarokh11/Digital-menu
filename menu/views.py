@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from menu.tulliana_data import TULLIANA_CATEGORIES, TULLIANA_MENU_DATA
 
 MENU_DATA = [
     {"name": "سبز", "description": "اسفناج، سیب، کیوی و لیمو", "price": "۱۸۵", "category": "آبمیوه طبیعی", "image": "menu/assets/products/green-apple.png", "badge": "بدون شکر"},
@@ -45,20 +46,71 @@ def home(request):
 
 
 def menu(request):
+    return _render_menu(
+        request,
+        MENU_DATA,
+        CATEGORY_ORDER,
+        {
+            "shop_name": SHOP_NAME,
+            "page_description": "منوی آبمیوه‌ها و نوشیدنی‌های تازه ویتا",
+            "brand_label": "VITA",
+            "menu_theme": "juice-menu",
+            "other_menu_url": "tulliana_menu",
+            "other_menu_label": "منوی فست‌فود تولیانا",
+            "hero_line_one": "میوه‌های تازه",
+            "hero_line_two": "حال خوب واقعی",
+            "hero_benefits": [("✦", "خوشمزه"), ("◆", "سالم"), ("❧", "طبیعی")],
+            "search_placeholder": "اسم یا ترکیبات رو جستجو کن...",
+            "footer_kicker": "طعم خوبِ لحظه‌ها",
+            "footer_line_one": "منتظرتیم،",
+            "footer_line_two": "با یه",
+            "footer_emphasis": "لیوان خنک.",
+            "footer_note": "اطلاعات تماس و آدرس فروشگاه اینجا قرار می‌گیرد.",
+        },
+    )
+
+
+def tulliana_menu(request):
+    return _render_menu(
+        request,
+        TULLIANA_MENU_DATA,
+        TULLIANA_CATEGORIES,
+        {
+            "shop_name": "فست‌فود تولیانا",
+            "page_description": "منوی فست‌فود تولیانا؛ پیتزا، پاستا، ساندویچ، نوشیدنی و دسر",
+            "brand_label": "vite",
+            "menu_theme": "tulliana-menu",
+            "other_menu_url": "menu",
+            "other_menu_label": "منوی آبمیوه ویتا",
+            "hero_line_one": "یک انتخاب خوشمزه",
+            "hero_line_two": "برای هر سلیقه",
+            "hero_benefits": [("♨", "تازه و داغ"), ("✦", "مواد مرغوب"), ("♥", "تنوع بالا")],
+            "search_placeholder": "پیتزا، پاستا یا غذای دلخواهت رو پیدا کن...",
+            "footer_kicker": "خوشمزه‌تر کنار هم",
+            "footer_line_one": "منتظرتیم،",
+            "footer_line_two": "با یه",
+            "footer_emphasis": "وعده خوشمزه.",
+            "footer_note": "اطلاعات تماس و آدرس فست‌فود اینجا قرار می‌گیرد.",
+        },
+    )
+
+
+def _render_menu(request, menu_items, categories, page_context):
     menu_groups = [
         {
             "name": category,
-            "items": [item for item in MENU_DATA if item["category"] == category],
+            "items": [item for item in menu_items if item["category"] == category],
         }
-        for category in CATEGORY_ORDER
+        for category in categories
     ]
+    context = {
+        **page_context,
+        "categories": categories,
+        "menu_groups": menu_groups,
+        "menu_items": menu_items,
+    }
     return render(
         request,
         "menu/index.html",
-        {
-            "categories": CATEGORY_ORDER,
-            "menu_groups": menu_groups,
-            "menu_items": MENU_DATA,
-            "shop_name": SHOP_NAME,
-        },
+        context,
     )
