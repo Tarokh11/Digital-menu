@@ -24,7 +24,8 @@ using the site as a live menu.
 - **Serving:** Gunicorn in the Docker image; Docker Compose for local and server
   runs.
 - **Deployment:** GitHub Actions workflow `.github/workflows/deploy.yml`, which
-  deploys pushes to `main` over SSH when repository secrets are configured.
+  deploys pushes to `main` or `fastfood_talia` over SSH when repository secrets
+  are configured.
 
 ## 3. Repository map
 
@@ -154,13 +155,16 @@ Docker Compose additionally uses `HOST_PORT` (default `8002`) and
 for local setup only. Keep real secrets in an ignored `.env` or deployment
 secret store; never commit them.
 
-The production workflow is triggered by pushes to `main` or manually from
-GitHub Actions. Configure the `digital-menu` GitHub Actions environment with
+The production workflow deploys pushes to `main` and `fastfood_talia`; a manual
+run can select either branch. Both branches deploy to the same server path, so
+the most recently deployed branch replaces the live site. Configure the
+`digital-menu` GitHub Actions environment with
 `SERVER_HOST`, `SERVER_USER`, `SERVER_SSH_KEY`, and `DEPLOY_PATH`; `SERVER_PORT`
 is optional and defaults to port 22. The server must have Git, Docker Compose,
 the repository deployment path, production environment configuration, and an
-HTTPS reverse proxy as appropriate. The workflow fetches `main`, builds the
-image, runs tests, restarts the service, and runs Django's deployment check.
+HTTPS reverse proxy as appropriate. The workflow fetches the triggering branch,
+builds the image, runs tests, restarts the service, and runs Django's deployment
+check.
 
 ## 8. Tests and checks
 
