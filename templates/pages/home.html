@@ -1,25 +1,100 @@
 {% extends "layouts/base.html" %}
-{% load static %}
 {% block content %}
-<main class="landing-page">
-  <section class="landing-hero" aria-labelledby="landing-title">
-    <div class="landing-art" aria-hidden="true"></div>
-    <div class="landing-content">
-      <div class="landing-brand" aria-label="Vita Juice Bar">
-        <span class="landing-fruit">●</span>
-        <strong>vita</strong>
+<main class="directory-page">
+  <div class="directory-shell">
+    <header class="directory-nav">
+      <a class="directory-brand" href="/" aria-label="تولیانا ویتا، صفحه اصلی"><span class="brand-mark">t</span><span>tulliana<span class="brand-dot">.</span></span></a>
+      <a class="nav-menu-link" href="{% url 'menu' %}"><span class="nav-menu-icon">☰</span> منوی ویتا</a>
+    </header>
+
+    <section class="directory-hero" aria-labelledby="directory-title">
+      <div class="hero-copy">
+        <p class="directory-eyebrow"><span></span> یک دنیا طعم، یک انتخاب ساده</p>
+        <h1 id="directory-title">همه‌ی خوشمزه‌ها<br><em>اینجا جمع‌اند.</em></h1>
+        <p class="directory-intro">فروشگاه دلخواهت را انتخاب کن، منو را ببین و چیزی که دوست داری را پیدا کن.</p>
+        <a class="hero-jump" href="#shops">انتخاب فروشگاه <span>↓</span></a>
       </div>
-      <p class="landing-kicker">تازه، طبیعی، هر روز</p>
-      <h1 id="landing-title">طعم تازه هر روز</h1>
-      <p class="landing-description">آبمیوه‌های طبیعی، تازه و خوشحال‌کننده</p>
-      <span class="landing-accent" aria-hidden="true"></span>
-    </div>
-    <a class="menu-cta" href="{% url 'menu' %}">
-      <span>مشاهده منو</span>
-      <span class="menu-cta-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
-      </span>
-    </a>
-  </section>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-sun"></div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="hero-fruit fruit-orange">🍊</div><div class="hero-fruit fruit-berry">🍓</div><div class="hero-fruit fruit-leaf">🌿</div>
+        <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">✦</span><span class="art-caption">FRESH<br>EVERY DAY</span>
+      </div>
+      <div class="hero-footnote"><span>EST. WITH LOVE</span><span>طعم خوب، حال خوب</span></div>
+    </section>
+
+    <section class="directory-section" id="shops" aria-labelledby="shops-title">
+      <div class="section-heading">
+        <div><p class="directory-eyebrow"><span></span> پیدا کن، انتخاب کن، لذت ببر</p><h2 id="shops-title">از کجا شروع کنیم؟</h2></div>
+        <span class="section-count">۰۹ <i>مقصد خوشمزه</i></span>
+      </div>
+
+      <div class="destination-grid">
+        <a class="destination-card card-main" href="https://94.184.45.92/" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">فروشگاه اصلی</span><span class="card-number">۰۱</span></span>
+          <span class="card-illustration illustration-shop" aria-hidden="true"><span>🍹</span></span>
+          <span class="card-title">فروشگاه ویتا</span><span class="card-description">ورود به فروشگاه اصلی و دیدن انتخاب‌های روز</span>
+          <span class="card-link">ورود به فروشگاه <b>↗</b></span>
+        </a>
+
+        <a class="destination-card card-store" href="http://94.184.45.92:8081/" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">فروشگاه آنلاین</span><span class="card-number">۰۲</span></span>
+          <span class="card-illustration illustration-green" aria-hidden="true"><span>🥝</span></span>
+          <span class="card-title">فروشگاه ۸۰۸۱</span><span class="card-description">محصولات و سفارش‌های فروشگاه</span>
+          <span class="card-link">مشاهده فروشگاه <b>↗</b></span>
+        </a>
+
+        <a class="destination-card card-store" href="http://94.184.45.92:8082/" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">فروشگاه آنلاین</span><span class="card-number">۰۳</span></span>
+          <span class="card-illustration illustration-peach" aria-hidden="true"><span>🍑</span></span>
+          <span class="card-title">فروشگاه ۸۰۸۲</span><span class="card-description">محصولات و سفارش‌های فروشگاه</span>
+          <span class="card-link">مشاهده فروشگاه <b>↗</b></span>
+        </a>
+
+        <a class="destination-card card-store" href="http://94.184.45.92:8083/" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">فروشگاه آنلاین</span><span class="card-number">۰۴</span></span>
+          <span class="card-illustration illustration-yellow" aria-hidden="true"><span>🍋</span></span>
+          <span class="card-title">فروشگاه ۸۰۸۳</span><span class="card-description">محصولات و سفارش‌های فروشگاه</span>
+          <span class="card-link">مشاهده فروشگاه <b>↗</b></span>
+        </a>
+
+        <a class="destination-card card-store" href="http://94.184.45.92:8001/" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">فروشگاه آنلاین</span><span class="card-number">۰۵</span></span>
+          <span class="card-illustration illustration-red" aria-hidden="true"><span>🍓</span></span>
+          <span class="card-title">فروشگاه ۸۰۰۱</span><span class="card-description">محصولات و سفارش‌های فروشگاه</span>
+          <span class="card-link">مشاهده فروشگاه <b>↗</b></span>
+        </a>
+
+        <a class="destination-card card-store" href="http://94.184.45.92:8003/" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">فروشگاه آنلاین</span><span class="card-number">۰۶</span></span>
+          <span class="card-illustration illustration-purple" aria-hidden="true"><span>🫐</span></span>
+          <span class="card-title">فروشگاه ۸۰۰۳</span><span class="card-description">محصولات و سفارش‌های فروشگاه</span>
+          <span class="card-link">مشاهده فروشگاه <b>↗</b></span>
+        </a>
+
+        <a class="destination-card card-store" href="http://94.184.45.92:8084/" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">فروشگاه آنلاین</span><span class="card-number">۰۷</span></span>
+          <span class="card-illustration illustration-orange" aria-hidden="true"><span>🥭</span></span>
+          <span class="card-title">فروشگاه ۸۰۸۴</span><span class="card-description">محصولات و سفارش‌های فروشگاه</span>
+          <span class="card-link">مشاهده فروشگاه <b>↗</b></span>
+        </a>
+
+        <a class="destination-card card-menu" href="http://94.184.45.92:8085/menu/" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">منوی رستوران</span><span class="card-number">۰۸</span></span>
+          <span class="card-illustration illustration-pasta" aria-hidden="true"><span>🍕</span></span>
+          <span class="card-title">منوی تولیانا</span><span class="card-description">پیتزا، غذاهای محبوب و نوشیدنی‌های تازه</span>
+          <span class="card-link">دیدن منو <b>↗</b></span>
+        </a>
+
+        <a class="destination-card card-product" href="http://94.184.45.92:8085/explore/?product=pizza-1911:24" target="_blank" rel="noopener noreferrer">
+          <span class="card-topline"><span class="card-category">پیشنهاد ویژه</span><span class="card-number">۰۹</span></span>
+          <span class="card-illustration illustration-pizza" aria-hidden="true"><span>🍕</span></span>
+          <span class="card-title">پیتزای مخصوص</span><span class="card-description">جزئیات و سفارش محصول ویژه را ببین</span>
+          <span class="card-link">مشاهده محصول <b>↗</b></span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="directory-footer"><a class="footer-brand" href="/">tulliana<span>.</span></a><span>با عشق آماده شده؛ برای لحظه‌های خوشمزه.</span><a href="#shops">بازگشت به بالا ↑</a></footer>
+  </div>
 </main>
 {% endblock %}
