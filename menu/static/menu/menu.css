@@ -727,3 +727,14 @@ a { color: inherit; }
 }
 @media (max-width: 390px) { .destination-grid { gap: 9px; }.destination-card { min-height: 248px; padding: 12px; }.card-title { font-size: .88rem; }.card-description { font-size: .63rem; }.card-category { font-size: .61rem; } }
 @media (prefers-reduced-motion: reduce) { .destination-card, .destination-card::after, .card-illustration span, .card-link b { transition: none; } }
+
+
+/* Per-site card previews */
+.card-preview { position: relative; display: block; width: 100%; height: clamp(92px, 15vw, 136px); flex: 0 0 auto; margin: 16px 0 12px; overflow: hidden; border-radius: 15px; background: #e9eee5; }
+.card-preview::after { position: absolute; inset: 0; border: 1px solid rgb(23 57 44 / 10%); border-radius: inherit; content: ""; pointer-events: none; }
+.card-preview img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform .35s ease; }
+.destination-card:hover .card-preview img { transform: scale(1.045); }
+.card-main .card-preview::after { border-color: rgb(255 255 255 / 16%); }
+@media (max-width: 760px) { .card-preview { height: clamp(88px, 23vw, 124px); margin: 13px 0 10px; border-radius: 13px; } }
+@media (max-width: 390px) { .card-preview { height: 88px; } }
+@media (prefers-reduced-motion: reduce) { .card-preview img { transition: none; } }
