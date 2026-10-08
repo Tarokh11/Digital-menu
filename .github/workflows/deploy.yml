@@ -108,7 +108,7 @@ jobs:
           docker compose up -d --force-recreate --no-build --no-deps web
           docker compose exec -T web python manage.py check --deploy </dev/null
           for attempt in {1..15}; do
-            if docker compose exec -T web python -c 'from urllib.request import urlopen; response = urlopen("http://127.0.0.1:8000/", timeout=2); body = response.read().decode(); assert response.status == 200 and "destination-card" in body' </dev/null >/dev/null 2>&1; then
+            if docker compose exec -T web python -c 'from urllib.request import Request, urlopen; request = Request("http://127.0.0.1:8000/", headers={"Host": "94.184.45.92"}); response = urlopen(request, timeout=2); body = response.read().decode(); assert response.status == 200 and "destination-card" in body' </dev/null >/dev/null 2>&1; then
               echo "Homepage smoke check passed (HTTP 200, directory cards present)."
               break
             fi
