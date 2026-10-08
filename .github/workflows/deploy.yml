@@ -106,7 +106,7 @@ jobs:
           docker compose build --pull=false web
           docker compose run --rm web python manage.py test </dev/null
           docker compose up -d --force-recreate --no-build --no-deps web
-          docker compose exec -T web python manage.py check --deploy
-          docker compose exec -T web python -c 'from urllib.request import urlopen; response = urlopen("http://127.0.0.1:8000/"); body = response.read().decode(); assert response.status == 200 and "destination-card" in body; print("Homepage smoke check passed (HTTP 200, directory cards present).")'
+          docker compose exec -T web python manage.py check --deploy </dev/null
+          docker compose exec -T web python -c 'from urllib.request import urlopen; response = urlopen("http://127.0.0.1:8000/"); body = response.read().decode(); assert response.status == 200 and "destination-card" in body; print("Homepage smoke check passed (HTTP 200, directory cards present).")' </dev/null
           docker compose ps
           REMOTE
