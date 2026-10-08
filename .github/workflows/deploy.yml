@@ -103,7 +103,7 @@ jobs:
           git remote set-url origin "$REPOSITORY"
           git fetch --prune origin "+refs/heads/$DEPLOY_BRANCH:refs/remotes/origin/$DEPLOY_BRANCH"
           git checkout -B "$DEPLOY_BRANCH" "origin/$DEPLOY_BRANCH"
-          docker compose build web
+          docker compose build --pull=false web
           docker compose run --rm web python manage.py test </dev/null
           docker compose up -d --force-recreate --no-build --no-deps web
           docker compose exec -T web python manage.py check --deploy
