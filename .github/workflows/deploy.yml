@@ -104,9 +104,9 @@ jobs:
           git fetch --prune origin "+refs/heads/$DEPLOY_BRANCH:refs/remotes/origin/$DEPLOY_BRANCH"
           git checkout -B "$DEPLOY_BRANCH" "origin/$DEPLOY_BRANCH"
           docker compose build web
-          docker compose run --rm web python manage.py test
-          docker compose rm -sf web
-          docker compose up -d --no-build
+          docker compose run --rm web python manage.py test </dev/null
+          docker compose up -d --force-recreate --no-build --no-deps web
           docker compose exec -T web python manage.py check --deploy
+          docker compose exec -T web python -c 'from urllib.request import urlopen; response = urlopen("http://127.0.0.1:8000/"); body = response.read().decode(); assert response.status == 200 and "destination-card" in body; print("Homepage smoke check passed (HTTP 200, directory cards present).")'
           docker compose ps
           REMOTE
