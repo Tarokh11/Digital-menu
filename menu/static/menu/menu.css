@@ -640,6 +640,8 @@ a { color: inherit; }
 .directory-page { --dir-ink: #17392c; --dir-green: #183f30; --dir-orange: #ed7235; --dir-cream: #fbf8ef; min-height: 100vh; background: var(--dir-cream); color: var(--dir-ink); overflow: hidden; }
 .directory-shell { width: min(100% - 48px, 1160px); margin-inline: auto; }
 .directory-nav { height: 72px; display: flex; align-items: center; justify-content: center; }
+.directory-banner { min-height: 80px; margin-top: 16px; border-radius: 18px; background: var(--dir-green); }
+.directory-banner .directory-brand { color: #fffefa; font-size: 2rem; font-weight: 600; letter-spacing: -.04em; }
 .directory-brand { display: inline-flex; align-items: center; gap: 9px; color: var(--dir-green); font-family: Georgia, serif; font-size: 1.2rem; font-weight: 800; letter-spacing: -.04em; text-decoration: none; }
 .brand-mark { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 10px 10px 10px 4px; background: var(--dir-orange); color: white; font-size: 1.15rem; font-style: italic; }
 .brand-dot, .footer-brand span { color: var(--dir-orange); }
