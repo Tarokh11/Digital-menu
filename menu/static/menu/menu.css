@@ -748,12 +748,14 @@ a { color: inherit; }
 .view-toggle:focus-visible, .deck-controls button:focus-visible { outline: 3px solid var(--dir-orange); outline-offset: 4px; }
 .deck-hint { margin: 0; color: #738375; font-size: .76rem; }
 .destination-grid.is-deck { display: grid; grid-template-columns: minmax(0, 420px); justify-content: center; gap: 0; padding: 30px 12px 8px; isolation: isolate; }
-.is-deck .destination-card { grid-area: 1 / 1; width: 100%; min-height: 390px; box-sizing: border-box; visibility: hidden; pointer-events: none; opacity: 0; transform: translateY(-30px) scale(.9); transform-origin: center bottom; transition: transform .25s ease, opacity .25s ease; }
+.is-deck .destination-card { grid-area: 1 / 1; width: 100%; min-height: 390px; box-sizing: border-box; visibility: hidden; pointer-events: none; opacity: 0; transform: translateY(-30px) scale(.9); transform-origin: center bottom; transition: transform .38s cubic-bezier(.22, 1, .36, 1), opacity .38s ease; }
 .is-deck .destination-card[data-depth="2"] { visibility: visible; opacity: .55; transform: translateY(-26px) rotate(-4deg) scale(.92); z-index: 1; }
 .is-deck .destination-card[data-depth="1"] { visibility: visible; opacity: .85; transform: translateY(-14px) rotate(3deg) scale(.96); z-index: 2; }
 .is-deck .destination-card[data-depth="0"] { visibility: visible; opacity: 1; z-index: 3; pointer-events: auto; transform: translateX(var(--drag-x, 0px)) rotate(var(--drag-angle, 0deg)); touch-action: pan-y; user-select: none; cursor: grab; box-shadow: 0 18px 40px rgb(31 55 39 / 14%); }
 .is-deck .destination-card.is-dragging { transition: none; cursor: grabbing; }
-.is-deck .destination-card.is-leaving { opacity: 0; }
+.is-deck .destination-card.is-outgoing { visibility: visible; z-index: 4; pointer-events: none; }
+.is-deck .destination-card[data-depth="0"], .is-deck .destination-card[data-depth="1"], .is-deck .destination-card.is-outgoing { will-change: transform, opacity; backface-visibility: hidden; }
+.is-deck .destination-card:hover .card-preview img { transform: none; }
 .is-deck .card-preview { height: 220px; }
 .is-deck .card-title { font-size: 1.3rem; }
 .is-deck .card-description { font-size: .8rem; }

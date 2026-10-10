@@ -16,7 +16,10 @@
   let busy = false;
   let drag = null;
   let suppressClickUntil = 0;
-  let timer;
+  let previewStep = 1;
+  let frame = 0;
+  let animations = [];
+  let animationVersion = 0;
   const render = () => {
     grid.classList.toggle('is-deck', deck);
     toggle.setAttribute('aria-pressed', String(deck));
@@ -25,9 +28,9 @@
     if (deck) grid.setAttribute('aria-describedby', 'deck-hint');
     else grid.removeAttribute('aria-describedby');
     cards.forEach((card, position) => {
-      const depth = (position - index + cards.length) % cards.length;
+      const depth = ((position - index) * previewStep + cards.length) % cards.length;
       card.dataset.depth = String(depth);
-      card.classList.remove('is-dragging', 'is-leaving');
+      card.classList.remove('is-dragging', 'is-outgoing');
       card.style.removeProperty('--drag-x');
       card.style.removeProperty('--drag-angle');
       card.inert = deck && depth !== 0;
@@ -37,22 +40,58 @@
     });
     counter.textContent = number.format(index + 1) + ' از ' + number.format(cards.length);
   };
-  const advance = (step, direction = step) => {
+  const stage = step => {
+    previewStep = step;
+    cards.forEach((card, position) => {
+      card.dataset.depth = String(((position - index) * step + cards.length) % cards.length);
+    });
+  };
+  const paintDrag = () => {
+    frame = 0;
+    if (!drag || !drag.horizontal) return;
+    drag.card.style.setProperty('--drag-x', drag.dx + 'px');
+    drag.card.style.setProperty('--drag-angle', Math.max(-12, Math.min(12, drag.dx / 28)) + 'deg');
+  };
+  const advance = async (step, offset = 0) => {
     if (!deck || busy || cards.length < 2) return;
     busy = true;
-    const active = cards[index];
-    active.classList.remove('is-dragging');
-    active.classList.add('is-leaving');
-    active.style.setProperty('--drag-x', (direction > 0 ? -1 : 1) * (grid.clientWidth + 80) + 'px');
-    active.style.setProperty('--drag-angle', (direction > 0 ? -16 : 16) + 'deg');
-    timer = window.setTimeout(() => {
-      index = (index + step + cards.length) % cards.length;
-      busy = false;
-      render();
-    }, reducedMotion.matches ? 0 : 240);
+    const version = ++animationVersion;
+    stage(step);
+    const outgoing = cards[index];
+    const incoming = cards[(index + step + cards.length) % cards.length];
+    const incomingStyle = window.getComputedStyle(incoming);
+    const incomingStart = { transform: incomingStyle.transform, opacity: incomingStyle.opacity };
+    const distance = outgoing.clientWidth + 100;
+    const exit = step > 0 ? -distance : distance;
+    const angle = Math.max(-12, Math.min(12, offset / 28));
+    const duration = reducedMotion.matches ? 0 : 380;
+    index = (index + step + cards.length) % cards.length;
+    render();
+    outgoing.classList.add('is-outgoing');
+    const timing = { duration, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' };
+    animations = [
+      outgoing.animate([
+        { transform: 'translate3d(' + offset + 'px, 0, 0) rotate(' + angle + 'deg)', opacity: 1 },
+        { transform: 'translate3d(' + exit + 'px, 12px, 0) rotate(' + (step > 0 ? -18 : 18) + 'deg)', opacity: 0 }
+      ], timing),
+      incoming.animate([
+        incomingStart,
+        { transform: 'translate3d(0, 0, 0) rotate(0deg) scale(1)', opacity: 1 }
+      ], timing)
+    ];
+    await Promise.all(animations.map(animation => animation.finished.catch(() => {})));
+    if (version !== animationVersion) return;
+    outgoing.classList.remove('is-outgoing');
+    animations.forEach(animation => animation.cancel());
+    animations = [];
+    busy = false;
   };
   toggle.addEventListener('click', () => {
-    window.clearTimeout(timer);
+    ++animationVersion;
+    animations.forEach(animation => animation.cancel());
+    animations = [];
+    window.cancelAnimationFrame(frame);
+    frame = 0;
     busy = false;
     drag = null;
     deck = !deck;
@@ -71,7 +110,7 @@
     if (!deck || busy || !event.isPrimary || event.button !== 0) return;
     const card = event.target.closest('.destination-card');
     if (card !== cards[index]) return;
-    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, card, dx: 0, horizontal: false };
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, card, dx: 0, velocity: 0, lastX: event.clientX, lastTime: event.timeStamp, horizontal: false };
   });
   grid.addEventListener('pointermove', event => {
     if (!drag || event.pointerId !== drag.id) return;
@@ -84,18 +123,27 @@
       drag.card.setPointerCapture(event.pointerId);
       drag.card.classList.add('is-dragging');
     }
+    const elapsed = event.timeStamp - drag.lastTime;
+    if (elapsed > 0) drag.velocity = (event.clientX - drag.lastX) / elapsed;
+    drag.lastX = event.clientX;
+    drag.lastTime = event.timeStamp;
     drag.dx = dx;
-    drag.card.style.setProperty('--drag-x', dx + 'px');
-    drag.card.style.setProperty('--drag-angle', Math.max(-14, Math.min(14, dx / 22)) + 'deg');
+    stage(dx < 0 ? 1 : -1);
+    if (!frame) frame = window.requestAnimationFrame(paintDrag);
   });
   const finishDrag = (event, cancelled = false) => {
     if (!drag || event.pointerId !== drag.id) return;
     const current = drag;
+    window.cancelAnimationFrame(frame);
+    frame = 0;
+    paintDrag();
     drag = null;
     if (current.card.hasPointerCapture(event.pointerId)) current.card.releasePointerCapture(event.pointerId);
     if (current.horizontal) suppressClickUntil = Date.now() + 400;
-    if (!cancelled && Math.abs(current.dx) > Math.min(75, current.card.clientWidth * .2)) {
-      advance(current.dx < 0 ? 1 : -1);
+    const flick = Math.abs(current.dx) > 20 && Math.abs(current.velocity) > .45 &&
+      event.timeStamp - current.lastTime < 100;
+    if (!cancelled && (Math.abs(current.dx) > Math.min(64, current.card.clientWidth * .18) || flick)) {
+      advance(current.dx < 0 ? 1 : -1, current.dx);
     } else render();
   };
   grid.addEventListener('pointerup', event => finishDrag(event));
