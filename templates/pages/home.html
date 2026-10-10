@@ -29,7 +29,11 @@
         <span class="section-count">۰۹ <i>مقصد خوشمزه</i></span>
       </div>
 
-      <div class="destination-grid">
+      <div class="destination-toolbar" hidden>
+        <button class="view-toggle" type="button" aria-pressed="false" aria-controls="destination-cards"><span aria-hidden="true">▱</span> <span class="view-toggle-label">نمایش دسته‌کارت</span></button>
+        <p class="deck-hint" id="deck-hint" hidden>با کشیدن کارت به چپ یا راست، ورق بزن</p>
+      </div>
+      <div class="destination-grid" id="destination-cards">
         <a class="destination-card card-main" href="https://94.184.45.92/" target="_blank" rel="noopener noreferrer">
           <span class="card-topline"><span class="card-category">فروشگاه اصلی</span><span class="card-number">۰۱</span></span>
           <span class="card-preview" aria-hidden="true"><img src="{% static 'menu/site-previews/nora-store.svg' %}" alt="" loading="lazy"></span>
@@ -93,9 +97,16 @@
           <span class="card-link">مشاهده محصول <b>↗</b></span>
         </a>
       </div>
+      <div class="deck-controls" hidden>
+        <button class="deck-prev" type="button" aria-label="کارت قبلی">→ <span>قبلی</span></button>
+        <span class="deck-counter" role="status" aria-live="polite" aria-atomic="true"></span>
+        <button class="deck-next" type="button" aria-label="کارت بعدی"><span>بعدی</span> ←</button>
+      </div>
     </section>
 
     <footer class="directory-footer"><a class="footer-brand" href="/">tulliana<span>.</span></a><span>با عشق آماده شده؛ برای لحظه‌های خوشمزه.</span><a href="#shops">بازگشت به بالا ↑</a></footer>
   </div>
 </main>
 {% endblock %}
+
+{% block scripts %}<script src="{% static 'menu/directory.js' %}" defer></script>{% endblock %}

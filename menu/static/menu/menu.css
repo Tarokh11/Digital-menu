@@ -738,3 +738,35 @@ a { color: inherit; }
 @media (max-width: 760px) { .card-preview { height: clamp(88px, 23vw, 124px); margin: 13px 0 10px; border-radius: 13px; } }
 @media (max-width: 390px) { .card-preview { height: 88px; } }
 @media (prefers-reduced-motion: reduce) { .card-preview img { transition: none; } }
+
+/* Swipeable destination deck */
+.destination-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+.destination-toolbar[hidden], .deck-controls[hidden], .deck-hint[hidden] { display: none; }
+.view-toggle, .deck-controls button { min-height: 48px; border: 1px solid #d6dece; border-radius: 999px; background: #fffefa; color: var(--dir-green); padding: 12px 20px; font: inherit; font-size: .82rem; font-weight: 800; cursor: pointer; }
+.view-toggle { display: inline-flex; align-items: center; gap: 9px; }
+.view-toggle[aria-pressed="true"] { background: var(--dir-green); border-color: var(--dir-green); color: white; }
+.view-toggle:focus-visible, .deck-controls button:focus-visible { outline: 3px solid var(--dir-orange); outline-offset: 4px; }
+.deck-hint { margin: 0; color: #738375; font-size: .76rem; }
+.destination-grid.is-deck { display: grid; grid-template-columns: minmax(0, 420px); justify-content: center; gap: 0; padding: 30px 12px 8px; isolation: isolate; }
+.is-deck .destination-card { grid-area: 1 / 1; width: 100%; min-height: 390px; box-sizing: border-box; visibility: hidden; pointer-events: none; opacity: 0; transform: translateY(-30px) scale(.9); transform-origin: center bottom; transition: transform .25s ease, opacity .25s ease; }
+.is-deck .destination-card[data-depth="2"] { visibility: visible; opacity: .55; transform: translateY(-26px) rotate(-4deg) scale(.92); z-index: 1; }
+.is-deck .destination-card[data-depth="1"] { visibility: visible; opacity: .85; transform: translateY(-14px) rotate(3deg) scale(.96); z-index: 2; }
+.is-deck .destination-card[data-depth="0"] { visibility: visible; opacity: 1; z-index: 3; pointer-events: auto; transform: translateX(var(--drag-x, 0px)) rotate(var(--drag-angle, 0deg)); touch-action: pan-y; user-select: none; cursor: grab; box-shadow: 0 18px 40px rgb(31 55 39 / 14%); }
+.is-deck .destination-card.is-dragging { transition: none; cursor: grabbing; }
+.is-deck .destination-card.is-leaving { opacity: 0; }
+.is-deck .card-preview { height: 220px; }
+.is-deck .card-title { font-size: 1.3rem; }
+.is-deck .card-description { font-size: .8rem; }
+.is-deck .card-preview img { pointer-events: none; }
+.deck-controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 24px; }
+.deck-controls button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-width: 96px; }
+.deck-controls .deck-next { background: var(--dir-green); border-color: var(--dir-green); color: white; }
+.deck-counter { min-width: 64px; color: #738375; font-size: .8rem; text-align: center; }
+@media (max-width: 760px) {
+ .destination-toolbar { align-items: start; gap: 12px; }
+ .deck-hint { width: 100%; }
+ .is-deck .destination-card { min-height: 370px; padding: 18px; border-radius: 24px; }
+ .is-deck .card-preview { height: clamp(160px, 48vw, 220px); }
+ .deck-controls { gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .is-deck .destination-card { transition: none; } }
