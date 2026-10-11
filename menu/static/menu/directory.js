@@ -48,6 +48,7 @@
       else card.removeAttribute('aria-hidden');
     });
     counter.textContent = cards.length ? number.format(index + 1) + ' از ' + number.format(cards.length) : '';
+    grid.dispatchEvent(new CustomEvent('directory:viewchange'));
   };
   const stage = step => {
     previewStep = step;

@@ -92,3 +92,9 @@
  .directory-footer > span { order: 3; flex-basis: 100%; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) { .is-deck .destination-card, .card-link, .destination-filters button, .view-toggle { transition: none; } }
+
+/* Viewport entry is prepared only when the observer is available. */
+.destination-grid:not(.is-deck) .destination-card.reveal-pending { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+ .destination-grid:not(.is-deck) .destination-card.reveal-pending { opacity: 1; }
+}
