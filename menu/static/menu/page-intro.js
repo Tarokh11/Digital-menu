@@ -42,7 +42,7 @@
           { transform: 'translate3d(0, 0, 0) rotate(0deg)' },
           { transform: 'translate3d(' + x + 'vw, ' + y + 'vh, 0) rotate(' + angle + 'deg)' }
         ], {
-          duration: index < 4 ? 1850 : 2050,
+          duration: index < 4 ? 3300 : 3600,
           delay: 180 + (index < 4 ? index * 45 : (index - 4) * 65),
           easing: 'cubic-bezier(.5, 0, .18, 1)',
           fill: 'forwards'
@@ -58,7 +58,7 @@
           { transform: 'translate3d(' + x * .22 + 'vw, ' + y * .18 + 'vh, 0) rotate(' + (angle - twist * .4) + 'deg)', offset: .4 },
           { transform: 'translate3d(' + x + 'vw, ' + y + 'vh, 0) rotate(' + (angle + twist) + 'deg)' }
         ], {
-          duration: 2100,
+          duration: 3650,
           delay: 180 + index * 35,
           easing: 'cubic-bezier(.5, 0, .18, 1)',
           fill: 'forwards'
@@ -74,7 +74,7 @@
   };
   root.classList.add('intro-ready');
   // Absolute fail-open limit, including slow parsing or an unexpected animation error.
-  watchdog = setTimeout(finish, 3600);
+  watchdog = setTimeout(finish, 5200);
   interruptEvents.forEach(event => document.addEventListener(event, finish, { capture: true, passive: true }));
   window.addEventListener('pagehide', finish, { once: true });
   motion.addEventListener?.('change', onMotionChange);
