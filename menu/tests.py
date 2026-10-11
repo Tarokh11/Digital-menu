@@ -16,9 +16,10 @@ class MenuPageTests(TestCase):
         self.assertContains(response, 'lang="fa" dir="rtl"')
         self.assertContains(response, "فروشگاه‌ها و منوها")
         self.assertContains(response, "آبمیوه‌فروشی ویتا")
-        self.assertContains(response, 'class="destination-card', count=10)
+        self.assertContains(response, 'class="destination-card', count=11)
         self.assertNotContains(response, 'class="nav-menu-link"')
         self.assertContains(response, reverse("menu"))
+        self.assertContains(response, reverse("menu_new"))
 
     def test_menu_page_renders_categories_and_items(self):
         response = self.client.get(reverse("menu"))

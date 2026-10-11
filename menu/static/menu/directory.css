@@ -98,3 +98,6 @@
 @media (prefers-reduced-motion: reduce) {
  .destination-grid:not(.is-deck) .destination-card.reveal-pending { opacity: 1; }
 }
+
+.card-preview--new-menu { background: #f7f8fc; }
+.card-preview--new-menu img { object-fit: contain; }
