@@ -8,6 +8,7 @@
   <meta name="description" content="{{ page_description|default:'منوی آبمیوه‌ها و نوشیدنی‌های تازه' }}">
   <title>{{ shop_name }}</title>
   <link rel="stylesheet" href="{% static 'menu/menu.css' %}">
+  {% block styles %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
   {% block content %}{% endblock %}
