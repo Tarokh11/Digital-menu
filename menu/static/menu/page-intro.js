@@ -42,23 +42,39 @@
           { transform: 'translate3d(0, 0, 0) rotate(0deg)' },
           { transform: 'translate3d(' + x + 'vw, ' + y + 'vh, 0) rotate(' + angle + 'deg)' }
         ], {
-          duration: index < 4 ? 1100 : 1180,
-          delay: 120 + (index < 4 ? index * 35 : (index - 4) * 45),
-          easing: 'cubic-bezier(.65, 0, .2, 1)',
+          duration: index < 4 ? 1850 : 2050,
+          delay: 180 + (index < 4 ? index * 45 : (index - 4) * 65),
+          easing: 'cubic-bezier(.5, 0, .18, 1)',
           fill: 'forwards'
         });
+      });
+      const leafDirections = [[-65, -85], [-45, -95], [65, -85], [65, 85], [80, 65], [-65, 85]];
+      overlay.querySelectorAll('.intro-leaf').forEach((leaf, index) => {
+        const [x, y] = leafDirections[index];
+        const angle = parseFloat(getComputedStyle(leaf).getPropertyValue('--leaf-angle')) || 0;
+        const twist = x < 0 ? -20 : 20;
+        animations.push(leaf.animate([
+          { transform: 'translate3d(0, 0, 0) rotate(' + angle + 'deg)' },
+          { transform: 'translate3d(' + x * .22 + 'vw, ' + y * .18 + 'vh, 0) rotate(' + (angle - twist * .4) + 'deg)', offset: .4 },
+          { transform: 'translate3d(' + x + 'vw, ' + y + 'vh, 0) rotate(' + (angle + twist) + 'deg)' }
+        ], {
+          duration: 2100,
+          delay: 180 + index * 35,
+          easing: 'cubic-bezier(.5, 0, .18, 1)',
+          fill: 'forwards'
+        }));
       });
       const signature = overlay.querySelector('.intro-signature');
       if (signature) animations.push(signature.animate([
         { opacity: 1, transform: 'scale(1)' },
         { opacity: 0, transform: 'scale(.94)' }
-      ], { duration: 300, delay: 100, fill: 'forwards', easing: 'ease-out' }));
+      ], { duration: 480, delay: 180, fill: 'forwards', easing: 'ease-out' }));
       Promise.all(animations.map(animation => animation.finished)).then(finish, finish);
     } catch (_) { finish(); }
   };
   root.classList.add('intro-ready');
   // Absolute fail-open limit, including slow parsing or an unexpected animation error.
-  watchdog = setTimeout(finish, 2200);
+  watchdog = setTimeout(finish, 3600);
   interruptEvents.forEach(event => document.addEventListener(event, finish, { capture: true, passive: true }));
   window.addEventListener('pagehide', finish, { once: true });
   motion.addEventListener?.('change', onMotionChange);

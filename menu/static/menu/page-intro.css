@@ -1,4 +1,4 @@
-/* Eight overlapping sheets open from the centre; mobile is the default canvas. */
+/* Green and autumn sheets, with six corner leaves; mobile is the default canvas. */
 .page-intro { display: none; }
 .intro-ready .page-intro {
   display: block;
@@ -14,14 +14,14 @@
   position: absolute;
   width: 56%;
   height: 56%;
-  background: #eef3e9;
+  background: #e9ead7;
   box-shadow: 0 8px 24px rgb(16 44 33 / 14%);
   will-change: transform;
 }
-.intro-sheet--nw { top: -2%; left: -2%; background: #e3ebdd; }
-.intro-sheet--ne { top: -2%; right: -2%; background: #f5f4eb; }
-.intro-sheet--sw { bottom: -2%; left: -2%; background: #f8f7ee; }
-.intro-sheet--se { bottom: -2%; right: -2%; background: #dce7d8; }
+.intro-sheet--nw { top: -2%; left: -2%; background: #cbd3ad; }
+.intro-sheet--ne { top: -2%; right: -2%; background: #dfad62; }
+.intro-sheet--sw { bottom: -2%; left: -2%; background: #ecd8ad; }
+.intro-sheet--se { bottom: -2%; right: -2%; background: #b0bf91; }
 .intro-sheet--curve {
   width: 68%;
   height: 62%;
@@ -31,10 +31,39 @@
   border-radius: 68% 32% 70% 30% / 42% 66% 34% 58%;
   box-shadow: 0 8px 22px rgb(13 39 28 / 18%);
 }
-.intro-sheet--north { top: -8%; left: 6%; background: #72967a; border-radius: 12% 16% 80% 28% / 10% 20% 76% 90%; }
-.intro-sheet--east { left: 47%; top: 20%; background: #b5c7a8; border-radius: 78% 0 0 36% / 52% 0 0 48%; }
-.intro-sheet--south { top: 47%; left: 28%; background: #456e51; border-radius: 84% 38% 12% 14% / 62% 42% 12% 18%; }
+.intro-sheet--north { top: -8%; left: 6%; background: #617a46; border-radius: 12% 16% 80% 28% / 10% 20% 76% 90%; }
+.intro-sheet--east { left: 47%; top: 20%; background: #ba653d; border-radius: 78% 0 0 36% / 52% 0 0 48%; }
+.intro-sheet--south { top: 47%; left: 28%; background: #b58a38; border-radius: 84% 38% 12% 14% / 62% 42% 12% 18%; }
 .intro-sheet--west { left: -15%; top: 30%; background: #285a47; border-radius: 0 78% 42% 0 / 0 46% 68% 0; }
+/* Lightweight leaf silhouettes and veins, with no raster assets. */
+.intro-leaf {
+  position: absolute;
+  width: clamp(76px, 26vw, 170px);
+  aspect-ratio: 1 / 1.6;
+  border-radius: 3% 90% 3% 90%;
+  background:
+    repeating-linear-gradient(25deg, transparent 0 22px, rgb(255 245 206 / 13%) 23px 24px, transparent 25px 43px),
+    linear-gradient(125deg, var(--leaf-light), var(--leaf-dark));
+  box-shadow: 4px 9px 18px rgb(43 48 19 / 20%), inset 0 0 0 1px rgb(255 248 223 / 15%);
+  transform: rotate(var(--leaf-angle));
+  will-change: transform;
+}
+.intro-leaf::before {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 87%;
+  left: 50%;
+  top: 7%;
+  transform: rotate(-31deg);
+  background: rgb(255 243 202 / 38%);
+}
+.intro-leaf--nw { top: 3%; left: -8%; --leaf-angle: -24deg; --leaf-light: #d9ad4a; --leaf-dark: #a15f2e; }
+.intro-leaf--nw-small { top: -6%; left: 18%; width: clamp(64px, 20vw, 130px); --leaf-angle: 62deg; --leaf-light: #91a765; --leaf-dark: #41613d; }
+.intro-leaf--ne { top: 7%; right: -7%; --leaf-angle: 36deg; --leaf-light: #d99157; --leaf-dark: #a94f32; }
+.intro-leaf--se { bottom: -5%; right: 2%; --leaf-angle: -28deg; --leaf-light: #77945b; --leaf-dark: #335c3d; }
+.intro-leaf--se-small { bottom: 15%; right: -12%; width: clamp(64px, 20vw, 130px); --leaf-angle: 58deg; --leaf-light: #e1bd62; --leaf-dark: #ad762d; }
+.intro-leaf--sw { bottom: 6%; left: -9%; --leaf-angle: 38deg; --leaf-light: #ca7546; --leaf-dark: #89472f; }
 .intro-signature {
   position: absolute;
   inset: 0;
