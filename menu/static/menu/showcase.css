@@ -1,0 +1,55 @@
+/* vite showcase landing — real project screens are the centerpiece. */
+.directory-page { --color-background: #f4f8f5; --color-muted: #e5eee6; }
+.directory-nav { min-height: 64px; border-radius: 12px; }
+.directory-brand { font-size: 2.25rem; }
+.showcase-hero { padding: 42px 0 40px; text-align: center; }
+.showcase-copy { max-width: 640px; margin-inline: auto; }
+.showcase-copy h1 { margin: 0; color: var(--color-primary); font-size: clamp(1.75rem, 4.4vw, 3.1rem); font-weight: 800; line-height: 1.4; text-wrap: balance; }
+.showcase-copy p { margin: 12px auto 0; color: var(--color-muted-foreground); font-size: .9375rem; line-height: 1.9; text-wrap: pretty; }
+.showcase-stage { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: center; gap: 0; max-width: 920px; min-height: 398px; margin: 32px auto 0; padding: 16px 40px 32px; }
+.showcase-stage::before { position: absolute; z-index: -1; inset: 24px 12% 12px; border-radius: 48%; background: radial-gradient(circle, #c6d5c8 1px, transparent 1.5px); background-size: 18px 18px; opacity: .6; content: ""; }
+.showcase-preview { position: relative; display: block; width: clamp(148px, 20vw, 218px); flex-shrink: 0; padding: 8px 8px 0; border: 1px solid #d4dfd5; border-radius: 16px; background: #fff; box-shadow: 0 18px 40px rgb(25 56 35 / 12%); color: var(--color-primary); text-decoration: none; transform-origin: center 70%; transition: transform .28s cubic-bezier(.22, 1, .36, 1), box-shadow .28s ease; }
+.showcase-screen { display: block; overflow: hidden; border-radius: 9px; background: #f7f4ec; aspect-ratio: .64; }
+.showcase-screen img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.showcase-caption { display: block; padding: 10px 4px; font-size: .8125rem; font-weight: 600; }
+.showcase-nora { z-index: 1; transform: translate(12px, 10px) rotate(11deg); }
+.showcase-white { z-index: 3; transform: translateY(-14px); }
+.showcase-vita { z-index: 2; transform: translate(-12px, 20px) rotate(-11deg); }
+@media (hover: hover) {
+ .showcase-preview:hover { z-index: 4; box-shadow: 0 24px 48px rgb(25 56 35 / 16%); }
+ .showcase-nora:hover { transform: translate(12px, -4px) rotate(5deg); }
+ .showcase-white:hover { transform: translateY(-24px); }
+ .showcase-vita:hover { transform: translate(-12px, 6px) rotate(-5deg); }
+}
+.showcase-action { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 12px; }
+.showcase-cta { display: grid; min-height: 48px; min-width: 196px; padding: 12px 24px; place-items: center; border-radius: 10px; background: var(--color-primary); color: var(--color-on-primary); text-decoration: none; font-size: .9375rem; font-weight: 600; transition: background .18s ease; }
+.showcase-cta:hover { background: #17634d; }
+.showcase-cta:active { filter: brightness(.95); }
+.showcase-action > span { color: var(--color-muted-foreground); font-size: .8125rem; }
+.showcase-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding: 24px 0 32px; border-bottom: 1px solid var(--color-border); text-align: center; }
+.showcase-summary p { margin: 0; font-size: .9375rem; font-weight: 600; line-height: 1.8; }
+.showcase-summary span { display: block; margin-top: 4px; color: var(--color-muted-foreground); font-size: .8125rem; font-weight: 400; }
+.directory-section { padding-top: 32px; }
+.directory-section .directory-discovery { grid-column: 1 / -1; width: min(100%, 640px); margin: 0 auto 24px; }
+.destination-grid { gap: 24px; }
+@media (max-width: 640px) {
+ .directory-nav { min-height: 56px; }
+ .directory-brand { font-size: 2rem; }
+ .showcase-hero { padding: 28px 0 32px; }
+ .showcase-copy p { max-width: 290px; font-size: .875rem; }
+ .showcase-stage { min-height: 280px; padding: 16px 0 24px; margin-top: 24px; }
+ .showcase-preview { width: clamp(88px, 27vw, 168px); padding: 5px 5px 0; border-radius: 12px; }
+ .showcase-screen { border-radius: 7px; }
+ .showcase-caption { font-size: .75rem; padding: 8px 0; }
+ .showcase-nora { transform: translate(8px, 10px) rotate(9deg); }
+ .showcase-white { transform: translateY(-8px); }
+ .showcase-vita { transform: translate(-8px, 16px) rotate(-9deg); }
+ .showcase-stage::before { inset-inline: 0; }
+ .showcase-action { margin-top: 4px; }
+ .showcase-summary { gap: 12px; padding: 16px 0 24px; }
+ .showcase-summary p { font-size: .8125rem; }
+ .showcase-summary span { font-size: .75rem; }
+ .directory-section { padding-top: 24px; }
+ .section-heading h2 { font-size: .875rem; }
+}
+@media (prefers-reduced-motion: reduce) { .showcase-preview, .showcase-cta { transition: none; } }

@@ -43,8 +43,8 @@ SHOP_NAME = "آبمیوه‌فروشی"
 
 def home(request):
     return render(request, "pages/home.html", {
-        "shop_name": "فروشگاه‌های ویتا و تولیانا",
-        "page_description": "ورود به فروشگاه‌های آنلاین، منوی تولیانا و محصولات ویژه ویتا.",
+        "shop_name": "vite | نمونه‌کارهای وب",
+        "page_description": "نمونه‌کارهای vite؛ فروشگاه‌ها، کافه‌ها و منوهای واقعی را ببین و تجربه کن.",
     })
 
 

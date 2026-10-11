@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-{% block styles %}<link rel="stylesheet" href="{% static 'menu/directory.css' %}">{% endblock %}
+{% block styles %}<link rel="icon" type="image/svg+xml" href="{% static 'menu/vite-mark.svg' %}"><meta property="og:title" content="vite | نمونه‌کارهای وب"><meta property="og:description" content="فروشگاه‌ها و منوهای واقعی را ببین و تجربه کن."><meta property="og:image" content="http://94.184.45.92:8003{% static 'menu/site-previews/white-menu.jpg' %}"><link rel="stylesheet" href="{% static 'menu/directory.css' %}"><link rel="stylesheet" href="{% static 'menu/showcase.css' %}">{% endblock %}
 {% block content %}
 <a class="directory-skip" href="#shops">رفتن به مقصدها</a>
 <main class="directory-page">
@@ -9,9 +9,38 @@
       <a class="directory-brand" href="/" aria-label="vite، صفحه اصلی" lang="en" dir="ltr">vite</a>
     </header>
 
-    <section class="directory-hero" aria-labelledby="directory-title">
-      <h1 id="directory-title">فروشگاه‌ها و منوها</h1>
-      <p class="directory-intro">مقصدت را انتخاب کن.</p>
+    <section class="showcase-hero" aria-labelledby="directory-title">
+      <div class="showcase-copy">
+        <h1 id="directory-title">طراحی را تجربه کن.</h1>
+        <p>فروشگاه، کافه و منو؛ هر نمونه یک تجربهٔ واقعی.</p>
+      </div>
+      <div class="showcase-stage" aria-label="پیش‌نمایش نمونه‌کارهای vite">
+        <a class="showcase-preview showcase-nora" href="https://94.184.45.92/" target="_blank" rel="noopener noreferrer" aria-label="باز کردن فروشگاه نورا">
+          <span class="showcase-screen"><img src="{% static 'menu/site-previews/nora-store.jpg' %}" alt="صفحهٔ نخست فروشگاه کودک نورا" width="748" height="1280" loading="eager"></span>
+          <span class="showcase-caption">فروشگاه نورا</span>
+        </a>
+        <a class="showcase-preview showcase-white" href="http://94.184.45.92:8085/menu/" target="_blank" rel="noopener noreferrer" aria-label="باز کردن منوی کافه وایت">
+          <span class="showcase-screen"><img src="{% static 'menu/site-previews/white-menu.jpg' %}" alt="صفحهٔ منوی کافه وایت و پیتزاهای آن" width="764" height="1280" loading="eager" fetchpriority="high"></span>
+          <span class="showcase-caption">کافه وایت</span>
+        </a>
+        <a class="showcase-preview showcase-vita" href="{% url 'menu' %}" target="_blank" rel="noopener noreferrer" aria-label="باز کردن منوی آبمیوه‌فروشی ویتا">
+          <span class="showcase-screen"><img src="{% static 'menu/site-previews/vita-local.jpg' %}" alt="صفحهٔ نخست منوی نوشیدنی‌های ویتا" width="883" height="1280" loading="eager"></span>
+          <span class="showcase-caption">منوی ویتا</span>
+        </a>
+      </div>
+      <div class="showcase-action">
+        <a class="showcase-cta" href="#shops">دیدن نمونه‌کارها</a>
+        <span>هر تصویر، یک سایت قابل تجربه</span>
+      </div>
+    </section>
+
+    <section class="showcase-summary" aria-label="نوع نمونه‌کارها">
+      <p>فروشگاه آنلاین<span>ویترین و انتخاب محصول</span></p>
+      <p>کافه و رستوران<span>منو و معرفی طعم‌ها</span></p>
+      <p>تجربهٔ موبایل<span>انتخاب با یک لمس</span></p>
+    </section>
+
+    <section class="directory-section" id="shops" aria-labelledby="shops-title">
       <div class="directory-discovery" hidden>
         <label for="destination-search">دنبال کدام فروشگاه یا منو هستی؟</label>
         <div class="search-field">
@@ -19,9 +48,6 @@
           <input id="destination-search" type="search" placeholder="نام یا نوع مقصد" autocomplete="off" aria-controls="destination-cards">
         </div>
       </div>
-    </section>
-
-    <section class="directory-section" id="shops" aria-labelledby="shops-title">
       <nav class="destination-filters" aria-label="دسته‌بندی مقصدها" hidden>
         <button type="button" data-filter="all" aria-pressed="true">همه</button>
         <button type="button" data-filter="shop" aria-pressed="false">فروشگاه‌ها</button>
@@ -30,7 +56,7 @@
         <button type="button" data-filter="guide" aria-pressed="false">راهنما</button>
       </nav>
       <div class="section-heading">
-        <h2 id="shops-title">انتخاب شما</h2>
+        <h2 id="shops-title">همهٔ نمونه‌کارها</h2>
         <span class="section-count" role="status" aria-live="polite" aria-atomic="true">۱۰ مقصد</span>
       </div>
 
@@ -41,7 +67,7 @@
       <div class="destination-grid" id="destination-cards">
         <a class="destination-card card-main" data-group="shop" href="https://94.184.45.92/" target="_blank" rel="noopener noreferrer">
           <span class="card-topline"><span class="card-category">فروشگاه کودک</span></span>
-          <span class="card-preview card-preview--screenshot" aria-hidden="true"><img src="{% static 'menu/site-previews/nora-store.jpg' %}" alt="" loading="eager" fetchpriority="high"></span>
+          <span class="card-preview card-preview--screenshot" aria-hidden="true"><img src="{% static 'menu/site-previews/nora-store.jpg' %}" alt="" loading="lazy"></span>
           <span class="card-meta"><span class="card-copy"><span class="card-title">فروشگاه نورا</span><span class="card-description">برای بازی، رشد و روزمره</span></span><span class="card-link">ورود</span></span>
         </a>
 
