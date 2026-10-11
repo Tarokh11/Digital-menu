@@ -1,7 +1,18 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-{% block styles %}<link rel="icon" type="image/svg+xml" href="{% static 'menu/vite-mark.svg' %}"><meta property="og:title" content="vite | نمونه‌کارهای وب"><meta property="og:description" content="فروشگاه‌ها و منوهای واقعی را ببین و تجربه کن."><meta property="og:image" content="http://94.184.45.92:8003{% static 'menu/site-previews/white-menu.jpg' %}"><link rel="stylesheet" href="{% static 'menu/directory.css' %}"><link rel="stylesheet" href="{% static 'menu/showcase.css' %}">{% endblock %}
+{% block styles %}<link rel="icon" type="image/svg+xml" href="{% static 'menu/vite-mark.svg' %}"><meta property="og:title" content="vite | نمونه‌کارهای وب"><meta property="og:description" content="فروشگاه‌ها و منوهای واقعی را ببین و تجربه کن."><meta property="og:image" content="http://94.184.45.92:8003{% static 'menu/site-previews/white-menu.jpg' %}"><link rel="stylesheet" href="{% static 'menu/directory.css' %}"><link rel="stylesheet" href="{% static 'menu/showcase.css' %}"><link rel="stylesheet" href="{% static 'menu/page-intro.css' %}"><script src="{% static 'menu/page-intro.js' %}"></script>{% endblock %}
 {% block content %}
+<div class="page-intro" aria-hidden="true" inert>
+  <span class="intro-sheet intro-sheet--nw"></span>
+  <span class="intro-sheet intro-sheet--ne"></span>
+  <span class="intro-sheet intro-sheet--sw"></span>
+  <span class="intro-sheet intro-sheet--se"></span>
+  <span class="intro-sheet intro-sheet--curve intro-sheet--north"></span>
+  <span class="intro-sheet intro-sheet--curve intro-sheet--east"></span>
+  <span class="intro-sheet intro-sheet--curve intro-sheet--south"></span>
+  <span class="intro-sheet intro-sheet--curve intro-sheet--west"></span>
+  <span class="intro-signature">vite</span>
+</div>
 <a class="directory-skip" href="#shops">رفتن به مقصدها</a>
 <main class="directory-page">
   <div class="directory-shell">

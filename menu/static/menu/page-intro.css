@@ -1,0 +1,57 @@
+/* Eight overlapping sheets open from the centre; mobile is the default canvas. */
+.page-intro { display: none; }
+.intro-ready .page-intro {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+  direction: ltr;
+}
+.intro-sheet {
+  position: absolute;
+  width: 56%;
+  height: 56%;
+  background: #eef3e9;
+  box-shadow: 0 8px 24px rgb(16 44 33 / 14%);
+  will-change: transform;
+}
+.intro-sheet--nw { top: -2%; left: -2%; background: #e3ebdd; }
+.intro-sheet--ne { top: -2%; right: -2%; background: #f5f4eb; }
+.intro-sheet--sw { bottom: -2%; left: -2%; background: #f8f7ee; }
+.intro-sheet--se { bottom: -2%; right: -2%; background: #dce7d8; }
+.intro-sheet--curve {
+  width: 68%;
+  height: 62%;
+  left: 16%;
+  top: 19%;
+  background: #285a47;
+  border-radius: 68% 32% 70% 30% / 42% 66% 34% 58%;
+  box-shadow: 0 8px 22px rgb(13 39 28 / 18%);
+}
+.intro-sheet--north { top: -8%; left: 6%; background: #72967a; border-radius: 12% 16% 80% 28% / 10% 20% 76% 90%; }
+.intro-sheet--east { left: 47%; top: 20%; background: #b5c7a8; border-radius: 78% 0 0 36% / 52% 0 0 48%; }
+.intro-sheet--south { top: 47%; left: 28%; background: #456e51; border-radius: 84% 38% 12% 14% / 62% 42% 12% 18%; }
+.intro-sheet--west { left: -15%; top: 30%; background: #285a47; border-radius: 0 78% 42% 0 / 0 46% 68% 0; }
+.intro-signature {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fffdf4;
+  font: 500 clamp(44px, 12vw, 72px)/1 system-ui, sans-serif;
+  letter-spacing: -.065em;
+  text-shadow: 0 2px 14px rgb(13 39 28 / 12%);
+}
+@media (min-width: 800px) {
+  .intro-sheet--curve { width: 58%; left: 21%; }
+  .intro-sheet--north { left: 8%; }
+  .intro-sheet--east { left: 48%; }
+  .intro-sheet--south { left: 31%; }
+  .intro-sheet--west { left: -8%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-ready .page-intro { display: none; }
+}
