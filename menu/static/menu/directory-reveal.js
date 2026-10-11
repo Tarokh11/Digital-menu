@@ -23,13 +23,36 @@
     observer.unobserve(card);
     const direction = positions.get(card) % 2 === 0 ? 1 : -1;
     const distance = Math.min(160, card.clientWidth * .45);
-    // Arrive quickly, brake past the resting point, then settle back.
-    const animation = card.animate([
-      { transform: 'translate3d(' + direction * distance + 'px,0,0)', opacity: 0, offset: 0, easing: 'cubic-bezier(.16,1,.3,1)' },
-      { transform: 'translate3d(' + -direction * 9 + 'px,0,0)', opacity: 1, offset: .72, easing: 'ease-in-out' },
-      { transform: 'translate3d(' + direction * 2 + 'px,0,0)', opacity: 1, offset: .9, easing: 'ease-out' },
-      { transform: 'translate3d(0,0,0)', opacity: 1, offset: 1 }
-    ], { duration: 720, delay, fill: 'both' });
+    const finalCard = cards.filter(candidate => !candidate.hidden).at(-1);
+    const hardBrake = card === finalCard;
+    const origin = direction > 0 ? '0% 100%' : '100% 100%';
+    const frame = (x, y, angle, offset, easing) => ({
+      transform: 'translate3d(' + x + 'px,' + y + 'px,0) rotate(' + angle + 'deg)',
+      transformOrigin: origin,
+      opacity: offset === 0 ? 0 : 1,
+      offset,
+      easing: easing || 'ease-out'
+    });
+    // The last visible card pivots on its leading bottom corner:
+    // its trailing edge lifts under braking, lands, then settles.
+    const keyframes = hardBrake ? [
+      frame(direction * distance, 0, 0, 0, 'cubic-bezier(.22,.7,.22,1)'),
+      frame(-direction * 14, 0, 0, .54, 'ease-out'),
+      frame(-direction * 18, 0, -direction * 14, .7, 'cubic-bezier(.45,0,.85,.55)'),
+      frame(-direction * 8, 3, direction * 2, .86, 'ease-out'),
+      frame(direction * 2, -1, -direction * .8, .95, 'ease-in-out'),
+      frame(0, 0, 0, 1)
+    ] : [
+      frame(direction * distance, 0, 0, 0, 'cubic-bezier(.22,.7,.22,1)'),
+      frame(-direction * 9, 0, 0, .72, 'ease-in-out'),
+      frame(direction * 2, 0, 0, .9, 'ease-out'),
+      frame(0, 0, 0, 1)
+    ];
+    const animation = card.animate(keyframes, {
+      duration: hardBrake ? 1320 : 980,
+      delay,
+      fill: 'both'
+    });
     running.set(card, animation);
     card.classList.remove('reveal-pending');
     animation.finished.then(() => {
@@ -38,12 +61,14 @@
       animation.cancel();
     }).catch(() => {});
   };
+  const triggerThreshold = .25;
+  const triggerInset = Math.min(120, Math.round(window.innerHeight * .18));
   const observer = new IntersectionObserver(entries => {
     let sequence = 0;
-    entries.filter(entry => entry.isIntersecting).sort((a, b) => positions.get(a.target) - positions.get(b.target)).forEach(entry => {
+    entries.filter(entry => entry.isIntersecting && entry.intersectionRatio >= triggerThreshold).sort((a, b) => positions.get(a.target) - positions.get(b.target)).forEach(entry => {
       enter(entry.target, Math.min(sequence++ * 70, 140));
     });
-  }, { rootMargin: '0px 0px -24px 0px', threshold: .12 });
+  }, { rootMargin: '0px 0px -' + triggerInset + 'px 0px', threshold: triggerThreshold });
 
   const sync = () => {
     observer.disconnect();
