@@ -101,3 +101,6 @@
 
 .card-preview--new-menu { background: #f7f8fc; }
 .card-preview--new-menu img { object-fit: contain; }
+
+.card-preview--demo-02 { background: #fff0e6; }
+.card-preview--demo-02 img { object-fit: contain; padding: 10px; }
