@@ -1,0 +1,115 @@
+/* VITA's second menu: cobalt packaging, open product grids and fruit photography. */
+.nova-menu {
+  --nova-paper: #f7f8fc;
+  --nova-white: #ffffff;
+  --nova-ink: #192d67;
+  --nova-muted: #5e6a86;
+  --nova-blue: #254bcc;
+  --nova-lemon: #ffe68c;
+  --nova-line: #d8deea;
+  --nova-nav-height: 136px;
+  background: var(--nova-paper);
+  color: var(--nova-ink);
+  font-family: "Vazirmatn", Tahoma, sans-serif;
+  line-height: 1.6;
+}
+.nova-menu [hidden] { display: none !important; }
+.nova-menu :focus-visible { outline: 3px solid var(--nova-blue); outline-offset: 5px; }
+.nova-menu svg { width: 20px; height: 20px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nova-shell { width: min(1240px, calc(100% - 32px)); margin-inline: auto; }
+.nova-skip { position: fixed; top: 8px; right: 16px; z-index: 50; padding: 12px 20px; border-radius: 12px; background: var(--nova-blue); color: var(--nova-white); transform: translateY(-150%); }
+.nova-skip:focus { transform: translateY(0); }
+.nova-header { display: flex; min-height: 96px; align-items: center; justify-content: space-between; gap: 24px; }
+.nova-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--nova-blue); text-decoration: none; }
+.nova-brand svg { width: 32px; height: 32px; fill: currentColor; stroke: none; }
+.nova-brand span { font-family: Arial, sans-serif; font-size: 32px; font-weight: 900; letter-spacing: -.04em; }
+.nova-header-note { color: var(--nova-muted); font-size: .875rem; }
+.nova-back { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; color: var(--nova-ink); font-size: .8125rem; font-weight: 600; text-decoration: none; }
+.nova-back svg { width: 16px; }
+.nova-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); min-height: 420px; align-items: center; gap: 36px; padding: 32px 64px; border-radius: 32px; background: var(--nova-blue); color: var(--nova-white); }
+.nova-hero-copy { min-width: 0; }
+.nova-hero h1 { max-width: 9em; margin: 0; font-size: clamp(2.3rem, 5.6vw, 4.75rem); font-weight: 850; line-height: 1.3; }
+.nova-hero-copy > p { margin: 20px 0 28px; color: #eef1ff; font-size: 1rem; line-height: 1.9; }
+.nova-hero-cta { display: inline-flex; max-width: 100%; min-height: 52px; align-items: center; justify-content: center; gap: 16px; padding: 12px 22px; border-radius: 14px; background: var(--nova-lemon); color: var(--nova-ink); font-size: .875rem; font-weight: 750; text-decoration: none; }
+.nova-hero .nova-hero-cta:focus-visible { outline-color: var(--nova-white); }
+.nova-hero-photo { width: min(100%, 340px); height: 360px; justify-self: center; overflow: hidden; border-radius: 150px 150px 24px 24px; background: #f4e4d3; }
+.nova-hero-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 66%; }
+.nova-controls { position: sticky; top: 0; z-index: 20; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 24px; align-items: center; margin-top: 24px; padding: 18px 0; border-bottom: 1px solid var(--nova-line); background: var(--nova-paper); }
+.nova-search { display: flex; min-width: 0; min-height: 48px; align-items: center; gap: 10px; padding: 0 12px; border: 1px solid var(--nova-line); border-radius: 12px; background: var(--nova-white); }
+.nova-search:focus-within { border-color: var(--nova-blue); box-shadow: 0 0 0 2px rgb(37 75 204 / 12%); }
+.nova-search > svg { color: var(--nova-muted); }
+.nova-search input { width: 100%; min-width: 0; padding-block: 12px; border: 0; outline: 0; background: transparent; color: var(--nova-ink); font: inherit; font-size: .875rem; }
+.nova-search input::-webkit-search-cancel-button { display: none; }
+.nova-search input::placeholder { color: var(--nova-muted); }
+.nova-search button { display: grid; width: 44px; height: 44px; flex: 0 0 44px; place-items: center; margin-inline-end: -10px; border: 0; border-radius: 10px; background: transparent; color: var(--nova-muted); cursor: pointer; }
+.nova-tabs { display: flex; min-width: 0; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.nova-tabs::-webkit-scrollbar { display: none; }
+.nova-tabs a { display: inline-flex; min-height: 48px; flex: 0 0 auto; align-items: center; padding: 10px 14px; border-bottom: 3px solid transparent; color: var(--nova-muted); font-size: .875rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.nova-tabs a[aria-current] { border-bottom-color: var(--nova-blue); color: var(--nova-blue); font-weight: 800; }
+.nova-tabs a:hover { color: var(--nova-blue); }
+.nova-tabs a:focus-visible { outline-offset: -3px; border-radius: 8px; }
+.nova-catalog,
+.nova-collection { scroll-margin-top: calc(var(--nova-nav-height) + 20px); }
+.nova-search-status { margin: 20px 0 0; color: var(--nova-muted); font-size: .875rem; }
+.nova-search-status:empty { display: none; }
+.nova-collection { padding-top: 44px; padding-bottom: 20px; }
+.nova-collection + .nova-collection { margin-top: 20px; border-top: 1px solid var(--nova-line); }
+.nova-collection-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.nova-collection-heading h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; line-height: 1.4; }
+.nova-collection-heading > p { margin: 0; color: var(--nova-muted); font-size: .875rem; }
+.nova-product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 26px; }
+.nova-product { display: flex; min-width: 0; flex-direction: column; }
+.nova-product-image { position: relative; overflow: hidden; aspect-ratio: 4 / 5; border-radius: 20px; background: #f4e4d3; }
+.nova-product-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.nova-product-badge { position: absolute; top: 12px; right: 12px; padding: 5px 12px; border-radius: 8px; background: var(--nova-white); color: var(--nova-ink); font-size: .75rem; font-weight: 700; }
+.nova-product-copy { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding-top: 18px; }
+.nova-product h3 { margin: 0; font-size: 1.125rem; font-weight: 800; line-height: 1.5; overflow-wrap: anywhere; }
+.nova-ingredients { margin: 6px 0 18px; color: var(--nova-muted); font-size: .875rem; line-height: 1.8; }
+.nova-product-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: auto 0 0; padding-top: 4px; color: var(--nova-ink); }
+.nova-product-price strong { font-size: 1.25rem; font-weight: 800; line-height: 1.4; }
+.nova-product-price > span { color: var(--nova-muted); font-size: .75rem; }
+.nova-empty { padding: 72px 16px; text-align: center; }
+.nova-empty h2 { margin: 0 0 12px; font-size: 1.5rem; }
+.nova-empty p { color: var(--nova-muted); }
+.nova-empty button { min-height: 48px; padding: 12px 20px; border: 0; border-radius: 12px; background: var(--nova-blue); color: var(--nova-white); font: inherit; cursor: pointer; }
+.nova-footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: 60px 0 24px; padding: 32px 0 16px; border-top: 1px solid var(--nova-line); }
+.nova-footer-brand { color: var(--nova-blue); font-family: Arial, sans-serif; font-size: 32px; font-weight: 900; letter-spacing: -.04em; }
+.nova-footer p { margin: 4px 0 0; color: var(--nova-muted); font-size: .875rem; }
+.nova-footer a { display: inline-flex; min-height: 44px; align-items: center; gap: 10px; font-size: .8125rem; text-decoration: none; }
+
+@media (max-width: 960px) {
+  .nova-hero { min-height: 360px; gap: 28px; padding: 28px 36px; }
+  .nova-hero-photo { height: 310px; }
+  .nova-controls { grid-template-columns: 220px minmax(0, 1fr); gap: 16px; }
+  .nova-product-grid { gap: 18px; }
+}
+@media (max-width: 700px) {
+  .nova-header { min-height: 80px; gap: 16px; }
+  .nova-header-note { display: none; }
+  .nova-hero { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); min-height: 310px; gap: 16px; padding: 24px; border-radius: 24px; }
+  .nova-hero h1 { font-size: clamp(1.65rem, 6.5vw, 2.8rem); line-height: 1.4; }
+  .nova-hero-copy > p { margin: 14px 0 20px; font-size: .875rem; line-height: 1.8; }
+  .nova-desktop-break { display: none; }
+  .nova-hero-cta { min-height: 48px; gap: 10px; padding: 10px 14px; font-size: .8125rem; }
+  .nova-hero-photo { height: 250px; border-radius: 100px 100px 16px 16px; }
+  .nova-controls { grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: 16px; padding: 12px 0 4px; }
+  .nova-search input { font-size: 1rem; }
+  .nova-tabs { margin-inline: -4px; }
+  .nova-tabs a { padding-inline: 14px; font-size: .8125rem; }
+  .nova-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 18px; }
+  .nova-collection { padding-top: 32px; }
+  .nova-collection-heading { flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 20px; }
+  .nova-collection-heading > p { font-size: .8125rem; }
+  .nova-product h3 { font-size: 1rem; }
+  .nova-ingredients { font-size: .8125rem; }
+  .nova-product-image { border-radius: 16px; }
+  .nova-product-badge { top: 8px; right: 8px; padding: 4px 8px; }
+}
+@media (max-width: 380px) {
+  .nova-shell { width: calc(100% - 28px); }
+  .nova-hero { gap: 12px; padding: 22px 16px; }
+  .nova-hero-cta { gap: 8px; padding-inline: 10px; font-size: .75rem; }
+  .nova-product-grid { column-gap: 14px; }
+  .nova-product-price strong { font-size: 1.125rem; }
+  .nova-footer { align-items: flex-start; }
+}

@@ -1,0 +1,82 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block theme_color %}#254bcc{% endblock %}
+{% block body_class %}nova-menu{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'menu/new-menu.css' %}">{% endblock %}
+{% block content %}
+<a class="nova-skip" href="#menu-catalog">رفتن به نوشیدنی‌ها</a>
+<div class="nova-shell" id="top">
+  <header class="nova-header">
+    <a class="nova-brand" href="{% url 'home' %}" aria-label="ویتا، صفحهٔ اصلی">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 32C8 32 3 19 6 9c10 0 20 8 14 23Z"/><path d="M20 32C13 14 23 3 35 4c2 13-5 24-15 28Z"/></svg>
+      <span lang="en" dir="ltr">VITA</span>
+    </a>
+    <span class="nova-header-note">آبمیوه و نوشیدنی</span>
+    <a class="nova-back" href="{% url 'menu' %}">منوی قبلی<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </header>
+
+  <main>
+    <section class="nova-hero" aria-labelledby="nova-title">
+      <div class="nova-hero-copy">
+        <h1 id="nova-title">حال خوب،<br>توی یک لیوان.</h1>
+        <p>از یک آبمیوهٔ خنک تا یک شیک خوش‌طعم؛<br class="nova-desktop-break"> امروز دلت کدام را می‌خواهد؟</p>
+        <a class="nova-hero-cta" href="#menu-catalog" data-menu-jump>دیدن نوشیدنی‌ها<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16m-6-6 6 6 6-6"/></svg></a>
+      </div>
+      <div class="nova-hero-photo">
+        <img src="{% static 'menu/assets/products/pomegranate-smoothie.png' %}" alt="یک لیوان نوشیدنی میوه‌ای ویتا" width="1122" height="1402" fetchpriority="high">
+      </div>
+    </section>
+
+    <div class="nova-controls" id="nova-controls">
+      <form class="nova-search" role="search" id="nova-search-form">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+        <label class="sr-only" for="nova-search">اسم یا ترکیبات نوشیدنی</label>
+        <input id="nova-search" type="search" placeholder="اسم یا ترکیبات نوشیدنی…" autocomplete="off">
+        <button type="button" id="nova-clear-search" aria-label="پاک کردن جستجو" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+      </form>
+      <nav class="nova-tabs" aria-label="دسته‌بندی نوشیدنی‌ها">
+        <a href="#menu-catalog" data-menu-jump aria-current="location">همه</a>
+        {% for group in menu_groups %}<a href="#{{ group.id }}" data-menu-jump>{{ group.name }}</a>{% endfor %}
+      </nav>
+    </div>
+
+    <div class="nova-catalog" id="menu-catalog">
+      <p class="nova-search-status" id="nova-search-status" role="status" aria-live="polite"></p>
+      {% for group in menu_groups %}
+      <section class="nova-collection" id="{{ group.id }}" aria-labelledby="{{ group.id }}-title" data-nova-section>
+        <header class="nova-collection-heading">
+          <h2 id="{{ group.id }}-title">{{ group.name }}</h2>
+          <p>{{ group.note }}</p>
+        </header>
+        <div class="nova-product-grid">
+          {% for item in group.items %}
+          <article class="nova-product" data-nova-card data-search="{{ item.name }} {{ item.description }} {{ item.category }}">
+            <div class="nova-product-image">
+              <img src="{% static item.image %}" alt="{{ item.name }}" width="1122" height="1402" loading="lazy" decoding="async">
+              {% if item.badge %}<span class="nova-product-badge">{{ item.badge }}</span>{% endif %}
+            </div>
+            <div class="nova-product-copy">
+              <h3>{{ item.name }}</h3>
+              <p class="nova-ingredients">{{ item.description }}</p>
+              <p class="nova-product-price"><strong>{{ item.price }}</strong><span>هزار تومان</span></p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+      {% endfor %}
+      <div class="nova-empty" id="nova-empty" hidden>
+        <h2>این ترکیب را پیدا نکردیم.</h2>
+        <p>یک اسم یا ترکیب دیگر، مثل «موز» یا «شکلات» را جستجو کن.</p>
+        <button type="button" id="nova-show-all">دیدن همهٔ نوشیدنی‌ها</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="nova-footer">
+    <div><span class="nova-footer-brand" lang="en" dir="ltr">VITA</span><p>یک لیوان برای حالِ خوب.</p></div>
+    <a href="#top">بازگشت به بالا<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V4m-6 6 6-6 6 6"/></svg></a>
+  </footer>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{% static 'menu/new-menu.js' %}" defer></script>{% endblock %}

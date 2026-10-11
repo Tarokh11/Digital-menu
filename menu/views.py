@@ -73,6 +73,30 @@ def menu(request):
     )
 
 
+def menu_new(request):
+    category_notes = [
+        "ترکیب‌های میوه‌ای، ساده و خنک",
+        "میوه‌های رنگارنگ، با بافتی نرم",
+        "بستنی، شیر و طعم‌های دوست‌داشتنی",
+        "ترکیب‌های پرملات برای یک انتخاب متفاوت",
+        "از طعم‌های میوه‌ای تا شکلات و زعفران",
+        "قهوه، شکلات داغ و نوشیدنی‌های گرم",
+    ]
+    return render(request, "menu/new.html", {
+        "shop_name": "VITA | یک لیوان حال خوب",
+        "page_description": "منوی ویتا؛ آبمیوه، اسموتی، شیک و نوشیدنی‌های گرم با ترکیبات و قیمت هر نوشیدنی.",
+        "menu_groups": [
+            {
+                "id": f"collection-{index + 1}",
+                "name": category,
+                "note": category_notes[index],
+                "items": [item for item in MENU_DATA if item["category"] == category],
+            }
+            for index, category in enumerate(CATEGORY_ORDER)
+        ],
+    })
+
+
 def tulliana_menu(request):
     return _render_menu(
         request,
