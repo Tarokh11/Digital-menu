@@ -21,7 +21,8 @@ if (backToTop) {
 }
 
 if (searchForm && searchInput) {
-  let activeCategory = "همه";
+  const categoryNav = document.querySelector(".category-scroll");
+  const scrollBehavior = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 
   const selectProduct = (option) => {
     const section = option.closest("[data-category-section]");
@@ -98,17 +99,16 @@ if (searchForm && searchInput) {
     let count = 0;
 
     categorySections.forEach((section) => {
-      const matchesCategory = activeCategory === "همه" || section.dataset.categorySection === activeCategory;
       const options = [...section.querySelectorAll("[data-product-option]")];
 
       options.forEach((option) => {
         const matchesSearch = option.dataset.search.toLocaleLowerCase("fa").includes(query);
         option.hidden = !matchesSearch;
-        if (matchesCategory && matchesSearch) count += 1;
+        if (matchesSearch) count += 1;
       });
 
       const firstVisibleOption = options.find((option) => !option.hidden);
-      section.hidden = !matchesCategory || !firstVisibleOption;
+      section.hidden = !firstVisibleOption;
       if (!section.hidden && section.querySelector(".menu-option.is-selected")?.hidden) {
         selectProduct(firstVisibleOption);
       }
@@ -143,17 +143,27 @@ if (searchForm && searchInput) {
 
   categoryButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      activeCategory = button.dataset.category;
+      const selectedCategory = button.dataset.category;
       categoryButtons.forEach((item) => {
         const selected = item === button;
         item.classList.toggle("is-active", selected);
         item.setAttribute("aria-pressed", String(selected));
       });
-      filterProducts();
-
-      if (activeCategory !== "همه") {
-        const section = categorySections.find((item) => item.dataset.categorySection === activeCategory);
-        section?.scrollIntoView({behavior: "smooth", block: "start"});
+      // Category buttons navigate the full menu; only the search filters products.
+      searchInput.value = "";
+      categorySections.forEach((section) => { section.hidden = false; });
+      productOptions.forEach((option) => { option.hidden = false; });
+      if (visibleCount) visibleCount.textContent = new Intl.NumberFormat("fa-IR").format(productOptions.length);
+      noResults.hidden = true;
+      const section = selectedCategory === "همه"
+        ? document.querySelector(".products-section")
+        : categorySections.find((item) => item.dataset.categorySection === selectedCategory);
+      if (section) {
+        const offset = (categoryNav?.getBoundingClientRect().height ?? 0) + 20;
+        window.scrollTo({
+          top: Math.max(0, window.scrollY + section.getBoundingClientRect().top - offset),
+          behavior: scrollBehavior(),
+        });
       }
     });
   });

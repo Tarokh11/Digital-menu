@@ -43,12 +43,11 @@
 
   <nav class="category-scroll" aria-label="دسته‌بندی منو">
     <button class="category-chip is-active" type="button" data-category="همه" aria-pressed="true">
-      <span class="chip-icon">▦</span> همه
+      <span class="category-label">همه</span><span class="category-total" aria-hidden="true">{{ menu_items|length }}</span>
     </button>
-    {% for category in categories %}
-    <button class="category-chip" type="button" data-category="{{ category }}" aria-pressed="false">
-      <span class="chip-icon">{% if category == "اسموتی" or category == "قهوه و نوشیدنی گرم" %}♨{% elif category == "شیک" or category == "پاستا" %}♜{% elif category == "بستنی" or category == "دسر" %}♧{% elif category == "پیتزا" %}◉{% elif category == "سالاد" %}❧{% else %}⌁{% endif %}</span>
-      {{ category }}
+    {% for group in menu_groups %}
+    <button class="category-chip" type="button" data-category="{{ group.name }}" aria-pressed="false">
+      <span class="category-label">{{ group.name }}</span><span class="category-total" aria-hidden="true">{{ group.items|length }}</span>
     </button>
     {% endfor %}
   </nav>
@@ -135,4 +134,4 @@
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6M12 9v9" /></svg>
 </button>
 {% endblock %}
-{% block scripts %}<script src="{% static 'menu/menu.js' %}" defer></script>{% endblock %}
+{% block scripts %}<script src="{% static 'menu/menu.js' %}?v=category-scroll-2" defer></script>{% endblock %}

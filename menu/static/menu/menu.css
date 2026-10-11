@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("fonts/vazirmatn-variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
   --ink: #29231e;
@@ -637,3 +645,75 @@ a { color: inherit; }
 
 
 /* Shop directory landing page */
+
+/* Make Persian product copy comfortable to read on the juice menu cards. */
+.juice-menu .category-scroll {
+  top: 8px;
+  gap: 6px;
+  min-height: 68px;
+  padding: 8px;
+  border: 1px solid rgb(121 100 59 / 18%);
+  border-radius: 22px;
+  background: rgb(255 250 239 / 96%);
+  box-shadow: 0 8px 24px rgb(91 65 31 / 10%);
+}
+.juice-menu .category-chip {
+  min-height: 48px;
+  gap: 10px;
+  padding-inline: 16px;
+  border-color: transparent;
+  border-radius: 15px;
+  background: transparent;
+  box-shadow: none;
+  font-size: .875rem;
+  font-weight: 650;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease;
+}
+.juice-menu .category-chip:hover { background: #f3ead8; }
+.juice-menu .category-chip:focus-visible { outline: 3px solid var(--menu-orange); outline-offset: -3px; }
+.juice-menu .category-chip.is-active { border-color: var(--menu-green); background: var(--menu-green); color: #fff8e9; font-weight: 750; }
+.category-total { display: grid; min-width: 24px; height: 24px; padding-inline: 5px; place-items: center; border-radius: 8px; background: rgb(48 69 45 / 8%); font-size: .75rem; font-variant-numeric: tabular-nums; }
+.juice-menu .category-chip.is-active .category-total { background: #f4bf7b; color: #30452d; }
+.juice-menu .category-showcase { scroll-margin-top: 96px; }
+.juice-menu .feature-copy { width: 54%; gap: 11px; padding: 20px 18px 16px; }
+.juice-menu .feature-art { width: 46%; }
+.juice-menu .feature-copy h4 { font-size: 1.45rem; line-height: 1.4; overflow-wrap: anywhere; }
+.juice-menu .feature-copy .feature-description { max-width: 34ch; font-size: .9rem; line-height: 1.7; }
+.juice-menu .feature-copy .product-category { font-size: .8rem; }
+.juice-menu .feature-copy .feature-price { padding-top: 10px; }
+.juice-menu .feature-price strong { font-size: 1.65rem; }
+.juice-menu .menu-option {
+  width: 190px;
+  min-height: 108px;
+  flex-basis: 190px;
+  gap: 12px;
+  padding: 10px;
+  overflow: visible;
+}
+.juice-menu .menu-option img { width: 68px; height: 80px; }
+.juice-menu .menu-option span { gap: 6px; }
+.juice-menu .menu-option strong {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: .9rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.juice-menu .menu-option small {
+  color: rgb(48 69 45 / 78%);
+  font-size: .75rem;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+@media (min-width: 700px) {
+  .juice-menu .feature-copy { width: 52%; gap: 16px; padding: 36px 32px 24px; }
+  .juice-menu .feature-art { width: 48%; }
+  .juice-menu .feature-copy h4 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.3; }
+  .juice-menu .feature-copy .feature-description { font-size: 1rem; }
+  .juice-menu .menu-option { width: 230px; min-height: 122px; flex-basis: 230px; }
+  .juice-menu .menu-option img { width: 84px; height: 96px; }
+  .juice-menu .menu-option strong { font-size: .95rem; }
+}
