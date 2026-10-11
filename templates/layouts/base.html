@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{% static 'menu/menu.css' %}">
   {% block styles %}{% endblock %}
 </head>
-<body class="{% block body_class %}{% endblock %}">
+<body class="{% block body_class %}{% endblock %}" {% block body_attributes %}{% endblock %}>
   {% block content %}{% endblock %}
   {% block scripts %}{% endblock %}
 </body>

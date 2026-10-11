@@ -672,8 +672,6 @@ a { color: inherit; }
 .juice-menu .category-chip:hover { background: #f3ead8; }
 .juice-menu .category-chip:focus-visible { outline: 3px solid var(--menu-orange); outline-offset: -3px; }
 .juice-menu .category-chip.is-active { border-color: var(--menu-green); background: var(--menu-green); color: #fff8e9; font-weight: 750; }
-.category-total { display: grid; min-width: 24px; height: 24px; padding-inline: 5px; place-items: center; border-radius: 8px; background: rgb(48 69 45 / 8%); font-size: .75rem; font-variant-numeric: tabular-nums; }
-.juice-menu .category-chip.is-active .category-total { background: #f4bf7b; color: #30452d; }
 .juice-menu .category-showcase { scroll-margin-top: 96px; }
 .juice-menu .feature-copy { width: 54%; gap: 11px; padding: 20px 18px 16px; }
 .juice-menu .feature-art { width: 46%; }

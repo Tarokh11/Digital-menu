@@ -8,6 +8,41 @@ const visibleCount = document.querySelector("#visible-count");
 const noResults = document.querySelector("#no-results");
 const backToTop = document.querySelector("#back-to-top");
 
+const menuSettings = document.querySelector("#menu-settings");
+const themeOptions = [...document.querySelectorAll("[data-theme]")];
+if (menuSettings && themeOptions.length) {
+  const themeKey = "vita-menu-theme";
+  const validThemes = new Set(themeOptions.map((option) => option.dataset.theme));
+  const applyTheme = (theme) => {
+    const selectedTheme = validThemes.has(theme) ? theme : "mint";
+    document.body.dataset.menuTheme = selectedTheme;
+    themeOptions.forEach((option) => {
+      option.setAttribute("aria-pressed", String(option.dataset.theme === selectedTheme));
+    });
+  };
+
+  try { applyTheme(localStorage.getItem(themeKey)); }
+  catch { applyTheme("mint"); }
+
+  themeOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      applyTheme(option.dataset.theme);
+      try { localStorage.setItem(themeKey, option.dataset.theme); } catch { /* The theme still works without storage. */ }
+      menuSettings.open = false;
+      menuSettings.querySelector("summary").focus({preventScroll: true});
+    });
+  });
+  document.addEventListener("click", (event) => {
+    if (!menuSettings.contains(event.target)) menuSettings.open = false;
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menuSettings.open) {
+      menuSettings.open = false;
+      menuSettings.querySelector("summary").focus({preventScroll: true});
+    }
+  });
+}
+
 if (backToTop) {
   const updateBackToTop = () => {
     backToTop.hidden = window.scrollY < 500;
