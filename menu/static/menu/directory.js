@@ -2,7 +2,15 @@
   'use strict';
   const grid = document.querySelector('#destination-cards');
   if (!grid) return;
-  const cards = Array.from(grid.querySelectorAll('.destination-card'));
+  const allCards = Array.from(grid.querySelectorAll('.destination-card'));
+  let cards = allCards.slice();
+  const search = document.querySelector('#destination-search');
+  const filters = Array.from(document.querySelectorAll('[data-filter]'));
+  const resultCount = document.querySelector('.section-count');
+  const empty = document.querySelector('.destination-empty');
+  let selectedGroup = 'all';
+  const normalize = value => value.normalize('NFKC').replace(/[يى]/g, 'ی').replace(/ك/g, 'ک').replace(/[\u064B-\u065F\u200c]/g, '').toLocaleLowerCase().trim();
+  const searchable = new Map(allCards.map(card => [card, normalize(card.textContent)]));
   const toolbar = document.querySelector('.destination-toolbar');
   const toggle = document.querySelector('.view-toggle');
   const label = toggle.querySelector('.view-toggle-label');
@@ -24,7 +32,8 @@
     grid.classList.toggle('is-deck', deck);
     toggle.setAttribute('aria-pressed', String(deck));
     label.textContent = deck ? 'نمایش همهٔ کارت‌ها' : 'نمایش دسته‌کارت';
-    controls.hidden = hint.hidden = !deck;
+    controls.hidden = hint.hidden = !deck || cards.length < 2;
+    grid.hidden = cards.length === 0;
     if (deck) grid.setAttribute('aria-describedby', 'deck-hint');
     else grid.removeAttribute('aria-describedby');
     cards.forEach((card, position) => {
@@ -38,7 +47,7 @@
       if (deck && depth !== 0) card.setAttribute('aria-hidden', 'true');
       else card.removeAttribute('aria-hidden');
     });
-    counter.textContent = number.format(index + 1) + ' از ' + number.format(cards.length);
+    counter.textContent = cards.length ? number.format(index + 1) + ' از ' + number.format(cards.length) : '';
   };
   const stage = step => {
     previewStep = step;
@@ -86,21 +95,57 @@
     animations = [];
     busy = false;
   };
-  toggle.addEventListener('click', () => {
+  const stopInteraction = () => {
     ++animationVersion;
     animations.forEach(animation => animation.cancel());
     animations = [];
     window.cancelAnimationFrame(frame);
     frame = 0;
-    busy = false;
+    const interruptedDrag = drag;
     drag = null;
+    if (interruptedDrag?.card.hasPointerCapture(interruptedDrag.id)) interruptedDrag.card.releasePointerCapture(interruptedDrag.id);
+    busy = false;
+  };
+  toggle.addEventListener('click', () => {
+    stopInteraction();
     deck = !deck;
     render();
+  });
+  const filterCards = () => {
+    stopInteraction();
+    const terms = normalize(search.value).split(/\s+/).filter(Boolean);
+    cards = allCards.filter(card => {
+      const matches = (selectedGroup === 'all' || card.dataset.group === selectedGroup) &&
+        terms.every(term => searchable.get(card).includes(term));
+      card.hidden = !matches;
+      card.inert = !matches;
+      card.tabIndex = matches ? 0 : -1;
+      card.classList.remove('is-dragging', 'is-outgoing');
+      if (!matches) card.setAttribute('aria-hidden', 'true');
+      return matches;
+    });
+    index = 0;
+    previewStep = 1;
+    empty.hidden = cards.length > 0;
+    resultCount.textContent = number.format(cards.length) + ' مقصد';
+    filters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === selectedGroup)));
+    render();
+  };
+  search.addEventListener('input', filterCards);
+  filters.forEach(button => button.addEventListener('click', () => {
+    selectedGroup = button.dataset.filter;
+    filterCards();
+  }));
+  document.querySelector('.reset-destinations').addEventListener('click', () => {
+    search.value = '';
+    selectedGroup = 'all';
+    filterCards();
+    search.focus();
   });
   document.querySelector('.deck-next').addEventListener('click', () => advance(1));
   document.querySelector('.deck-prev').addEventListener('click', () => advance(-1));
   grid.addEventListener('keydown', event => {
-    if (!deck || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    if (!deck || cards.length < 2 || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     event.preventDefault();
     // Keep focus on an available control when the focused card leaves the deck.
     document.querySelector(event.key === 'ArrowLeft' ? '.deck-next' : '.deck-prev').focus();
@@ -157,5 +202,7 @@
   }, true);
   grid.addEventListener('dragstart', event => { if (deck) event.preventDefault(); });
   toolbar.hidden = false;
-  render();
+  document.querySelector('.directory-discovery').hidden = false;
+  document.querySelector('.destination-filters').hidden = false;
+  filterCards();
 })();
