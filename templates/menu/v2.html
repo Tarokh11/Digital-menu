@@ -1,0 +1,168 @@
+{% extends "layouts/base_v2.html" %}
+{% load static %}
+{% block body_class %}menu-body {{ menu_theme }}{% endblock %}
+{% block body_attributes %}{% if menu_theme == "juice-menu" %}data-menu-theme="mint"{% endif %}{% endblock %}
+{% block styles %}{% if menu_theme == "juice-menu" %}<link rel="stylesheet" href="{% static 'menu/themes-v2.css' %}?v=themes-1">{% endif %}{% endblock %}
+{% block content %}
+<main class="menu-page">
+  <section class="menu-discovery" aria-labelledby="menu-title">
+    <div class="menu-hero">
+      <header class="menu-hero-nav">
+        {% if menu_theme == "juice-menu" %}
+        <details class="menu-settings" id="menu-settings">
+          <summary class="menu-hero-icon" aria-label="تنظیمات منو">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          </summary>
+          <div class="menu-settings-panel">
+            <p class="theme-heading" id="theme-heading">رنگ منو</p>
+            <div class="theme-options" role="group" aria-labelledby="theme-heading">
+              <button type="button" class="theme-option" data-theme="mint" aria-pressed="true">
+                <span class="theme-preview" aria-hidden="true"></span><span>سبز نعنایی<small>سبز آرام و سفید</small></span>
+                <svg class="theme-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg>
+              </button>
+              <button type="button" class="theme-option" data-theme="citrus" aria-pressed="false">
+                <span class="theme-preview" aria-hidden="true"></span><span>پرتقالی گرم<small>نارنجی و کرم</small></span>
+                <svg class="theme-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg>
+              </button>
+              <button type="button" class="theme-option" data-theme="berry" aria-pressed="false">
+                <span class="theme-preview" aria-hidden="true"></span><span>توت و یاس<small>آلویی و صورتی روشن</small></span>
+                <svg class="theme-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg>
+              </button>
+              <button type="button" class="theme-option" data-theme="midnight" aria-pressed="false">
+                <span class="theme-preview" aria-hidden="true"></span><span>شب آبی<small>سرمه‌ای و طلایی</small></span>
+                <svg class="theme-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg>
+              </button>
+            </div>
+          </div>
+        </details>
+        {% else %}
+        <a class="menu-hero-icon" href="{% url other_menu_url %}" aria-label="{{ other_menu_label }}" title="{{ other_menu_label }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+        </a>
+        {% endif %}
+        <a class="menu-hero-brand" href="{% url 'home' %}" aria-label="صفحه اصلی {{ brand_label }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 3C13 3.5 8.5 7.2 8.5 13.2c0 3.1 1.8 5.7 4.5 7.1 0-5.3 2.1-9.6 6.5-13.1Z" /><path d="M4.5 8.1c4.6.4 7.4 3 7.4 7.2 0 2.4-1.3 4.6-3.4 5.7C8.3 16.2 7 12.1 4.5 8.1Z" /></svg>
+          <span>{{ brand_label }}</span>
+        </a>
+        <div class="menu-hero-actions">
+          <button class="menu-hero-icon" type="button" aria-label="سبد خرید">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.2h10.9L21 7H6.1" /><circle cx="9" cy="19" r="1" /><circle cx="18" cy="19" r="1" /></svg>
+          </button>
+          <a class="menu-hero-icon" href="#contact" aria-label="اطلاعات تماس">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M4.5 21c.8-4 3.4-6 7.5-6s6.7 2 7.5 6" /></svg>
+          </a>
+        </div>
+      </header>
+      <div class="menu-hero-content">
+        <h1 id="menu-title">{{ hero_line_one }}<br>{{ hero_line_two }}</h1>
+        <ul class="menu-hero-benefits" aria-label="ویژگی‌های {{ brand_label }}">
+          {% for icon, label in hero_benefits %}<li><span>{{ icon }}</span>{{ label }}</li>{% endfor %}
+        </ul>
+      </div>
+
+      <form class="menu-search" role="search" id="menu-search-form">
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+        <label class="sr-only" for="menu-search-input">جستجو در منو</label>
+        <input id="menu-search-input" type="search" placeholder="{{ search_placeholder }}" autocomplete="off">
+        <button type="submit" aria-label="جستجو">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+        </button>
+      </form>
+    </div>
+
+  </section>
+
+  <nav class="category-scroll" aria-label="دسته‌بندی منو">
+    <button class="category-chip is-active" type="button" data-category="همه" aria-pressed="true">
+      <span class="category-label">همه</span>
+    </button>
+    {% for group in menu_groups %}
+    <button class="category-chip" type="button" data-category="{{ group.name }}" aria-pressed="false">
+      <span class="category-label">{{ group.name }}</span>
+    </button>
+    {% endfor %}
+  </nav>
+
+  <section class="products-section" aria-labelledby="products-title">
+    <span class="sr-only" id="products-title">دسته‌بندی محصولات</span>
+
+    <div class="category-showcases" id="product-grid">
+      {% for group in menu_groups %}
+      {% with featured=group.items.0 %}
+      <section class="category-showcase" data-category-section="{{ group.name }}">
+        <header class="category-heading">
+          <div>
+            <p>از بین {{ group.items|length }} طعم انتخاب کن</p>
+            <h3>{{ group.name }}</h3>
+          </div>
+          <span class="category-rule" aria-hidden="true"></span>
+        </header>
+
+        <article class="category-feature" data-feature-panel>
+          <div class="feature-copy">
+            <span class="product-badge" data-feature-badge{% if not featured.badge %} hidden{% endif %}>{{ featured.badge }}</span>
+            <p class="product-category">{{ group.name }}</p>
+            <h4 data-feature-name>{{ featured.name }}</h4>
+            <p class="feature-description" data-feature-description>{{ featured.description }}</p>
+            {% if featured.price %}<p class="feature-price"><strong data-feature-price>{{ featured.price }}</strong><span>هزار تومان</span></p>{% endif %}
+          </div>
+          <div class="feature-art">
+            <img data-feature-image src="{% static featured.image %}" alt="{{ featured.name }}">
+          </div>
+        </article>
+
+        <div class="item-rail" aria-label="محصولات {{ group.name }}">
+          {% for item in group.items %}
+          <button class="menu-option{% if forloop.first %} is-selected{% endif %}"
+                  type="button"
+                  data-product-option
+                  data-name="{{ item.name }}"
+                  data-description="{{ item.description }}"
+                  data-price="{{ item.price|default:'' }}"
+                  data-badge="{{ item.badge|default:'' }}"
+                  data-image="{% static item.image %}"
+                  data-search="{{ item.name }} {{ item.description }} {{ item.category }}"
+                  aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+            <img src="{% static item.image %}" alt="" loading="lazy">
+            <span><strong>{{ item.name }}</strong>{% if item.price %}<small>{{ item.price }} هزار تومان</small>{% else %}<small>قیمت اعلام نشده</small>{% endif %}</span>
+          </button>
+          {% endfor %}
+        </div>
+      </section>
+      {% endwith %}
+      {% endfor %}
+    </div>
+    <p class="no-results" id="no-results" hidden>چیزی با این مشخصات پیدا نشد؛ یک طعم دیگه امتحان کن.</p>
+  </section>
+</main>
+
+<footer class="menu-footer" id="contact">
+  <div class="footer-leaf" aria-hidden="true">❧</div>
+  <div class="footer-top">
+    <div class="footer-message">
+      <p>{{ footer_kicker }}</p>
+      <h2>{{ footer_line_one }}<br>{{ footer_line_two }} <span>{{ footer_emphasis }}</span></h2>
+      <p class="footer-note">{{ footer_note }}</p>
+    </div>
+    <div class="loyalty-card" aria-label="باشگاه مشتریان">
+      <span class="loyalty-brand">{{ shop_name }}</span>
+      <span class="qr-placeholder" aria-hidden="true">▦</span>
+      <strong>باشگاه مشتریان</strong>
+      <small>به‌زودی فعال می‌شود</small>
+    </div>
+  </div>
+  <div class="footer-actions">
+    <a href="#" aria-label="اینستاگرام">Instagram</a>
+    <a href="#" aria-label="تلگرام">Telegram</a>
+    <a href="#" aria-label="واتساپ">WhatsApp</a>
+  </div>
+  <div class="footer-bottom">
+    <nav aria-label="پیوندهای پایین صفحه"><a href="#">قوانین</a><a href="#">حریم خصوصی</a><a href="#">تماس با ما</a></nav>
+    <p>© تمامی حقوق محفوظ است.</p>
+  </div>
+</footer>
+<button class="back-to-top" id="back-to-top" type="button" aria-label="بازگشت به بالا" hidden>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6M12 9v9" /></svg>
+</button>
+{% endblock %}
+{% block scripts %}<script src="{% static 'menu/menu-v2.js' %}?v=themes-1" defer></script>{% endblock %}
