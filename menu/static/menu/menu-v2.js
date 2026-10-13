@@ -84,49 +84,39 @@ if (searchForm && searchInput) {
     requestAnimationFrame(() => panel.classList.add("is-changing"));
   };
 
-  const selectCenteredProduct = (rail) => {
+  const centerOption = (rail, option, behavior = scrollBehavior()) => {
+    if (!rail.classList.contains("is-scrollable") || !option) return;
     const railRect = rail.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
-    const railOptions = [...rail.querySelectorAll("[data-product-option]")]
-      .filter((option) => !option.hidden);
-    const visibleOptions = railOptions
-      .map((option) => {
-        const rect = option.getBoundingClientRect();
-        const visibleWidth = Math.max(
-          0,
-          Math.min(rect.right, railRect.right) - Math.max(rect.left, railRect.left),
-        );
+    const optionRect = option.getBoundingClientRect();
+    rail.scrollBy({left: optionRect.left + optionRect.width / 2 - railRect.left - rail.clientWidth / 2, behavior});
+  };
 
-        return {
-          option,
-          rect,
-          visible: visibleWidth / rect.width,
-          distance: Math.abs(rect.left + rect.width / 2 - railCenter),
-        };
-      })
-      .filter(({visible}) => visible >= 0.5)
-      .sort((first, second) => first.distance - second.distance);
+  const selectCenteredProduct = (rail) => {
+    if (!rail.classList.contains("is-scrollable")) return;
+    const railRect = rail.getBoundingClientRect();
+    const center = railRect.left + rail.clientWidth / 2;
+    const options = [...rail.querySelectorAll("[data-product-option]")].filter(option => !option.hidden);
+    const nearest = options.reduce((best, option) => {
+      const rect = option.getBoundingClientRect();
+      const maxScroll = rail.scrollWidth - rail.clientWidth;
+      const desiredScroll = rail.scrollLeft + rect.left + rect.width / 2 - center;
+      const targetScroll = getComputedStyle(rail).direction === "rtl"
+        ? Math.max(-maxScroll, Math.min(0, desiredScroll))
+        : Math.max(0, Math.min(maxScroll, desiredScroll));
+      // At the ends, the browser clamps the snap target instead of adding blank space.
+      const distance = Math.abs(rail.scrollLeft - targetScroll);
+      return !best || distance < best.distance ? {option, distance} : best;
+    }, null);
+    if (nearest) selectProduct(nearest.option);
+  };
 
-    const firstOption = visibleOptions.find(({option}) => option === railOptions[0]);
-    const lastOption = visibleOptions.find(({option}) => option === railOptions[railOptions.length - 1]);
-    const direction = getComputedStyle(rail).direction;
-    const leadingOption = direction === "rtl" ? firstOption : lastOption;
-    const trailingOption = direction === "rtl" ? lastOption : firstOption;
-    const edgeOffset = 4;
-    const reachesLeadingEdge = leadingOption && (direction === "rtl"
-      ? leadingOption.rect.right >= railRect.right - edgeOffset
-      : leadingOption.rect.left <= railRect.left + edgeOffset);
-    const reachesTrailingEdge = trailingOption && (direction === "rtl"
-      ? trailingOption.rect.left <= railRect.left + edgeOffset
-      : trailingOption.rect.right >= railRect.right - edgeOffset);
-
-    if (reachesLeadingEdge) {
-      selectProduct(leadingOption.option);
-    } else if (reachesTrailingEdge) {
-      selectProduct(trailingOption.option);
-    } else if (visibleOptions[0]) {
-      selectProduct(visibleOptions[0].option);
-    }
+  const updateRailLayout = (rail) => {
+    const options = [...rail.querySelectorAll("[data-product-option]")].filter(option => !option.hidden);
+    const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+    const totalWidth = options.reduce((width, option) => width + option.getBoundingClientRect().width, 0)
+      + Math.max(0, options.length - 1) * gap;
+    rail.classList.toggle("is-scrollable", totalWidth > rail.clientWidth + 1);
+    centerOption(rail, options.find(option => option.classList.contains("is-selected")), "instant");
   };
 
   const filterProducts = () => {
@@ -147,27 +137,42 @@ if (searchForm && searchInput) {
       if (!section.hidden && section.querySelector(".menu-option.is-selected")?.hidden) {
         selectProduct(firstVisibleOption);
       }
+      if (!section.hidden) updateRailLayout(section.querySelector(".item-rail"));
     });
 
     if (visibleCount) visibleCount.textContent = new Intl.NumberFormat("fa-IR").format(count);
     noResults.hidden = count !== 0;
   };
 
+  // Keep an explicit click selected until the user scrolls the rail again.
+  const explicitlySelectedRails = new WeakSet();
   productOptions.forEach((option) => {
-    option.addEventListener("click", () => selectProduct(option));
+    option.addEventListener("click", () => {
+      explicitlySelectedRails.add(option.closest(".item-rail"));
+      selectProduct(option);
+      centerOption(option.closest(".item-rail"), option);
+    });
   });
 
   itemRails.forEach((rail) => {
-    let frameRequested = false;
-
+    let settleTimer;
+    const resumeScrollSelection = () => explicitlySelectedRails.delete(rail);
+    rail.addEventListener("pointerdown", resumeScrollSelection, {passive: true});
+    rail.addEventListener("wheel", resumeScrollSelection, {passive: true});
+    rail.addEventListener("keydown", (event) => {
+      if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) resumeScrollSelection();
+    });
+    const finishScroll = () => {
+      clearTimeout(settleTimer);
+      if (!explicitlySelectedRails.has(rail)) selectCenteredProduct(rail);
+    };
     rail.addEventListener("scroll", () => {
-      if (frameRequested) return;
-      frameRequested = true;
-      requestAnimationFrame(() => {
-        frameRequested = false;
-        selectCenteredProduct(rail);
-      });
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(finishScroll, 160);
     }, {passive: true});
+    rail.addEventListener("scrollend", finishScroll);
+    new ResizeObserver(() => updateRailLayout(rail)).observe(rail);
+    updateRailLayout(rail);
   });
 
   searchForm.addEventListener("submit", (event) => {
@@ -188,6 +193,7 @@ if (searchForm && searchInput) {
       searchInput.value = "";
       categorySections.forEach((section) => { section.hidden = false; });
       productOptions.forEach((option) => { option.hidden = false; });
+      itemRails.forEach(updateRailLayout);
       if (visibleCount) visibleCount.textContent = new Intl.NumberFormat("fa-IR").format(productOptions.length);
       noResults.hidden = true;
       const section = selectedCategory === "همه"

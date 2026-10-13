@@ -2,7 +2,7 @@
 {% load static %}
 {% block body_class %}menu-body {{ menu_theme }}{% endblock %}
 {% block body_attributes %}{% if menu_theme == "juice-menu" %}data-menu-theme="mint"{% endif %}{% endblock %}
-{% block styles %}{% if menu_theme == "juice-menu" %}<link rel="stylesheet" href="{% static 'menu/themes-v2.css' %}?v=themes-1">{% endif %}{% endblock %}
+{% block styles %}{% if menu_theme == "juice-menu" %}<link rel="stylesheet" href="{% static 'menu/themes-v2.css' %}?v=scroll-5">{% endif %}{% endblock %}
 {% block content %}
 <main class="menu-page">
   <section class="menu-discovery" aria-labelledby="menu-title">
@@ -90,19 +90,16 @@
       {% for group in menu_groups %}
       {% with featured=group.items.0 %}
       <section class="category-showcase" data-category-section="{{ group.name }}">
-        <header class="category-heading">
-          <div>
-            <p>از بین {{ group.items|length }} طعم انتخاب کن</p>
-            <h3>{{ group.name }}</h3>
-          </div>
-          <span class="category-rule" aria-hidden="true"></span>
-        </header>
-
         <article class="category-feature" data-feature-panel>
           <div class="feature-copy">
-            <span class="product-badge" data-feature-badge{% if not featured.badge %} hidden{% endif %}>{{ featured.badge }}</span>
-            <p class="product-category">{{ group.name }}</p>
-            <h4 data-feature-name>{{ featured.name }}</h4>
+            <header class="category-heading">
+              <h3>{{ group.name }}</h3>
+              <span class="category-count">{{ group.items|length }} طعم</span>
+            </header>
+            <div class="feature-title">
+              <h4 data-feature-name>{{ featured.name }}</h4>
+              <span class="product-badge" data-feature-badge{% if not featured.badge %} hidden{% endif %}>{{ featured.badge }}</span>
+            </div>
             <p class="feature-description" data-feature-description>{{ featured.description }}</p>
             {% if featured.price %}<p class="feature-price"><strong data-feature-price>{{ featured.price }}</strong><span>هزار تومان</span></p>{% endif %}
           </div>
@@ -165,4 +162,4 @@
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6M12 9v9" /></svg>
 </button>
 {% endblock %}
-{% block scripts %}<script src="{% static 'menu/menu-v2.js' %}?v=themes-1" defer></script>{% endblock %}
+{% block scripts %}<script src="{% static 'menu/menu-v2.js' %}?v=scroll-5" defer></script>{% endblock %}

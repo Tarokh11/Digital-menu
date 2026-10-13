@@ -10,12 +10,11 @@ from menu import views, views_v2
     "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
 })
 class IndependentMenuTests(SimpleTestCase):
-    def test_copy_matches_original_with_independent_assets(self):
+    def test_menu_uses_independent_templates_and_assets(self):
         original = self.client.get(reverse("menu"))
         copy = self.client.get(reverse("menu_v2"))
         self.assertEqual(original.status_code, 200)
         self.assertEqual(copy.status_code, 200)
-        normalized = copy.content.decode()
         for independent, shared in [
             ("menu/menu-v2.css", "menu/menu.css"),
             ("menu/themes-v2.css", "menu/themes.css"),
@@ -23,8 +22,9 @@ class IndependentMenuTests(SimpleTestCase):
         ]:
             self.assertContains(copy, independent)
             self.assertNotContains(copy, shared)
-            normalized = normalized.replace(independent, shared)
-        self.assertEqual(normalized, original.content.decode())
+        self.assertEqual(len(copy.context["menu_items"]), 24)
+        self.assertEqual(len(copy.context["menu_groups"]), 6)
+        self.assertTrue(all(item["image"].startswith("menu/assets/cutouts-v2/") for item in copy.context["menu_items"]))
         self.assertTemplateUsed(copy, "layouts/base_v2.html")
         self.assertTemplateUsed(copy, "menu/v2.html")
 
