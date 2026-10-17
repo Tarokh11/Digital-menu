@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - fastfood_talia
+      - personal_page
   workflow_dispatch:
     inputs:
       deploy_branch:
@@ -13,7 +13,7 @@ on:
         type: choice
         options:
           - main
-          - fastfood_talia
+          - personal_page
         default: main
 
 permissions:
@@ -90,7 +90,7 @@ jobs:
             "DEPLOY_PATH=$remote_path DEPLOY_BRANCH=$remote_branch REPOSITORY=$remote_repository bash -se" <<'REMOTE'
           set -eu
           case "$DEPLOY_BRANCH" in
-            main|fastfood_talia) ;;
+            main|personal_page) ;;
             *) printf 'Refusing to deploy unsupported branch: %s\n' "$DEPLOY_BRANCH" >&2; exit 1 ;;
           esac
           cd "$DEPLOY_PATH"

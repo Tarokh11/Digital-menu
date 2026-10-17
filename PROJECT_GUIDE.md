@@ -24,7 +24,7 @@ using the site as a live menu.
 - **Serving:** Gunicorn in the Docker image; Docker Compose for local and server
   runs.
 - **Deployment:** GitHub Actions workflow `.github/workflows/deploy.yml`, which
-  deploys pushes to `main` or `fastfood_talia` over SSH when repository secrets
+  deploys pushes to `main` or `personal_page` over SSH when repository secrets
   are configured.
 
 ## 3. Repository map
@@ -155,7 +155,7 @@ Docker Compose additionally uses `HOST_PORT` (default `8002`) and
 for local setup only. Keep real secrets in an ignored `.env` or deployment
 secret store; never commit them.
 
-The production workflow deploys pushes to `main` and `fastfood_talia`; a manual
+The production workflow deploys pushes to `main` and `personal_page`; a manual
 run can select either branch. Both branches deploy to the same server path, so
 the most recently deployed branch replaces the live site. Configure the
 `digital-menu` GitHub Actions environment with

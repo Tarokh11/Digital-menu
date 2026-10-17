@@ -6,3 +6,6 @@ __pycache__/
 /venv/
 /.venv/
 .DS_Store
+
+# Local deployment credentials
+.deploy-secrets
