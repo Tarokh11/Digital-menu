@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.templatetags.static import static
 
 from menu.tulliana_data import TULLIANA_CATEGORIES, TULLIANA_MENU_DATA
+from menu.portfolio import PROJECTS
 
 MENU_DATA = [
     {"name": "سبز", "description": "اسفناج، سیب، کیوی و لیمو", "price": "۱۸۵", "category": "آبمیوه طبیعی", "image": "menu/assets/products/green-apple.png", "badge": "بدون شکر"},
@@ -43,8 +45,9 @@ SHOP_NAME = "آبمیوه‌فروشی"
 
 def home(request):
     return render(request, "pages/home.html", {
-        "shop_name": "vite | نمونه‌کارهای وب",
-        "page_description": "نمونه‌کارهای vite؛ فروشگاه‌ها، کافه‌ها و منوهای واقعی را ببین و تجربه کن.",
+        "shop_name": "Tarokh | طراحی و توسعهٔ وب",
+        "page_description": "طراحی و توسعهٔ وب با تارخ؛ فروشگاه‌ها و منوها را تجربه کن و برای ساخت پروژهٔ خودت در تماس باش.",
+        "projects": [{**project, "desktop_url": static(project["desktop"]), "mobile_url": static(project["mobile"])} for project in PROJECTS],
     })
 
 
